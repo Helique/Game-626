@@ -57,28 +57,28 @@ public class world {
 		}
 		grid[4][4][0] = new Terrain(TerrainType.STONE, 4, 4, 1, this);
 		grid[6][6][1] = new Terrain(TerrainType.GRASS, 6, 6, 1, this);
-		grid[6][7][1] = new Terrain(TerrainType.GRASS, 7, 6, 1, this);
-		grid[7][6][1] = new Terrain(TerrainType.GRASS, 6, 7, 1, this);
+		grid[7][6][1] = new Terrain(TerrainType.GRASS, 7, 6, 1, this);
+		grid[6][7][1] = new Terrain(TerrainType.GRASS, 6, 7, 1, this);
 		grid[7][7][1] = new Terrain(TerrainType.GRASS, 7, 7, 1, this);
 		grid[8][8][1] = new Collectable(TerrainType.BUD, 8, 8, 1, this);
-		grid[8][9][1] = new Collectable(TerrainType.TAPE, 9, 8, 1,this);
+		grid[9][8][1] = new Collectable(TerrainType.TAPE, 9, 8, 1,this);
 	}
 	public void draw(){
 		for(int i = 0; i < grid.length;i++){
 			for(int j = 0; j <grid[i].length;j ++){
-				if(grid[i][j][0] != null){
+				if(grid[j][i][0] != null){
 
 					
-					renderer.addRender(grid[i][j][0].getType().location, world.BLOCK_SIZE *j + offset, world.BLOCK_SIZE*i + offset, BLOCK_SIZE, BLOCK_SIZE,new Vector4f(0,0,1,1));
+					renderer.addRender(grid[j][i][0].getType().location, world.BLOCK_SIZE *j + offset, world.BLOCK_SIZE*i + offset, BLOCK_SIZE, BLOCK_SIZE,new Vector4f(0,0,1,1));
 				}
 				
 			}
 		}
 		for(int i =0; i<firstPlayer.logicY;i++){
 			for(int j = 0; j <grid[i].length;j ++){
-				if(grid[i][j][1] != null){
+				if(grid[j][i][1] != null){
 					
-					renderer.addRender(grid[i][j][1].getType().location, world.BLOCK_SIZE *j + offset, world.BLOCK_SIZE*i + offset, BLOCK_SIZE, BLOCK_SIZE,new Vector4f(0,0,1,1));
+					renderer.addRender(grid[j][i][1].getType().location, world.BLOCK_SIZE *j + offset, world.BLOCK_SIZE*i + offset, BLOCK_SIZE, BLOCK_SIZE,new Vector4f(0,0,1,1));
 				}
 			}
 		}
@@ -87,10 +87,10 @@ public class world {
 		firstPlayer.draw(renderer);
 		for(int i =firstPlayer.logicY; i<grid.length;i++){
 			for(int j = 0; j <grid[i].length;j ++){
-				if(grid[i][j][1] != null){
+				if(grid[j][i][1] != null){
 					
 					
-					renderer.addRender(grid[i][j][1].getType().location, world.BLOCK_SIZE *j + offset, world.BLOCK_SIZE*i + offset, BLOCK_SIZE, BLOCK_SIZE,new Vector4f(0,0,1,1));
+					renderer.addRender(grid[j][i][1].getType().location, world.BLOCK_SIZE *j + offset, world.BLOCK_SIZE*i + offset, BLOCK_SIZE, BLOCK_SIZE,new Vector4f(0,0,1,1));
 				}
 			}
 		}
