@@ -24,7 +24,7 @@ public class Obstacle implements unit {
 		
 	}
 	@Override
-	public void update(int delta, Terrain[][] map) {
+	public void update(int delta, Terrain[][][] map) {
 		// TODO Auto-generated method stub
 		
 	}

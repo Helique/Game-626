@@ -25,12 +25,14 @@ public class Terrain {
 	private float y;
 	int logicX;
 	int logicY;
-	private world parent;
-	public Terrain(TerrainType type, int x, int y, world parent) {
+	int logicZ;
+	protected world parent;
+	public Terrain(TerrainType type, int x, int y, int z, world parent) {
 		Animation = new AnimationSequence(type.location);
 		this.type = type;
 		this.logicX = x;
 		this.logicY = y;
+		this.logicZ = z;
 		this.parent = parent;
 		
 	}
@@ -38,7 +40,7 @@ public class Terrain {
 		return true;
 	}
 	public void activate(Hero activatingPlayer){
-		
+		//parent.removeTerrain(this.logicX,this.logicY,this.logicZ);
 	}
 	public String getTextureID(){
 		return null;

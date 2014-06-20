@@ -57,9 +57,10 @@ public class Hero implements unit{
 	}
 
 	@Override
-	public void update(int delta,Terrain[][] map) {
+	public void update(int delta,Terrain[][][] grid) {
+		
 		if(atDestination == false){
-			if(map[logicY+destinationY][logicX+destinationX].getType() != TerrainType.STONE){
+			if(grid[logicY+destinationY][logicX+destinationX][0].getType() != TerrainType.STONE){
 				if(destinationX >0){
 					renderX += speed;
 					direction = Direction.RIGHT;
@@ -79,7 +80,7 @@ public class Hero implements unit{
 					logicX +=destinationX;
 					logicY +=destinationY;
 				}
-			} else if (map[logicY+destinationY][logicX+destinationX].getType() == TerrainType.STONE){
+			} else if (grid[logicY+destinationY][logicX+destinationX][0].getType() == TerrainType.STONE){
 				destinationX = 0;
 				destinationY = 0;
 				atDestination = true;
