@@ -16,4 +16,7 @@ public class ItemStack {
 	public ItemType getItemType(){
 		return this.item;
 	}
+	public int getNumber(){
+		return number;
+	}
 }

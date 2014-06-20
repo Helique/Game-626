@@ -20,6 +20,7 @@ public class Hero implements unit{
 	double speed = 2;
 	Terrain[][][] grid;
 	boolean atDestination = true;
+	Bag backPack = new Bag();
 	Direction direction = Direction.DOWN;
 	AnimationSequence movingRight = new AnimationSequence("resources/heroRight.png");
 	

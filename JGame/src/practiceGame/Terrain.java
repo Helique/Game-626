@@ -19,7 +19,7 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
 public class Terrain {
-	private TerrainType type = TerrainType.AIR;
+	protected TerrainType type = TerrainType.AIR;
 	private AnimationSequence Animation;
 	private float x;
 	private float y;

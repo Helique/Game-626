@@ -1,5 +1,5 @@
 package practiceGame;
 
 public enum ItemType {
-	BUD;
+	BUD, TAPE;
 }

@@ -9,6 +9,15 @@ public class Collectable extends Terrain {
 	
 	public void activate(Hero activatingPlayer){
 		parent.removeTerrain(this.logicX,this.logicY,this.logicZ);
+		if(this.type == TerrainType.BUD){
+			activatingPlayer.backPack.addItem(ItemType.BUD, 1);
+			
+		}
+		if(this.type == TerrainType.TAPE){
+			activatingPlayer.backPack.addItem(ItemType.TAPE, 1);
+			
+		}
+		activatingPlayer.backPack.printBag();
 	}
 
 }

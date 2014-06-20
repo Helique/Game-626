@@ -64,7 +64,9 @@ public class world {
 		grid[6][7][1] = new Terrain(TerrainType.GRASS, 6, 7, 1, this);
 		grid[7][7][1] = new Terrain(TerrainType.GRASS, 7, 7, 1, this);
 		grid[8][8][1] = new Collectable(TerrainType.BUD, 8, 8, 1, this);
+		grid[2][1][1] = new Collectable(TerrainType.BUD, 2, 1, 1, this);
 		grid[9][8][1] = new Collectable(TerrainType.TAPE, 9, 8, 1,this);
+		grid[1][1][1] = new Collectable(TerrainType.TAPE, 1, 1, 1,this);
 	}
 	public void draw(){
 		for(int i = 0; i < grid.length;i++){
