@@ -15,7 +15,7 @@ public class world {
 	boolean HeroMoveDown =  false;
 	boolean HeroMoveUp =  false;
 	Terrain[][][] grid;
-	Hero firstPlayer = new Hero(10, 15, 3, 3);
+	Hero firstPlayer;
 	
 	public static world importWorld(){
 		return null;
@@ -29,6 +29,7 @@ public class world {
 		
 	}
 	public world(){
+		
 		renderer.loadTexture("resources/tankRight.png");
 		renderer.loadTexture("resources/dirt.png");
 		renderer.loadTexture("resources/heroRight.png");
@@ -55,6 +56,8 @@ public class world {
 			grid[0][i][0] = new Terrain(TerrainType.STONE,i,0,0,this);
 			grid[grid.length- 1][i][0] = new Terrain(TerrainType.STONE, i, grid.length-1, 0, this);
 		}
+		
+		firstPlayer = new Hero(10, 15, 3, 3,grid);
 		grid[4][4][0] = new Terrain(TerrainType.STONE, 4, 4, 1, this);
 		grid[6][6][1] = new Terrain(TerrainType.GRASS, 6, 6, 1, this);
 		grid[7][6][1] = new Terrain(TerrainType.GRASS, 7, 6, 1, this);
@@ -112,7 +115,7 @@ public class world {
 			firstPlayer.move(0, 1);
 		}
 		
-		firstPlayer.update(delta, grid);
+		firstPlayer.update(delta);
 	}
 	private void input() {
 		int mousex = Mouse.getX();

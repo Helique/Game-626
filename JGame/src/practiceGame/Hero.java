@@ -18,11 +18,13 @@ public class Hero implements unit{
 	int destinationX;
 	int destinationY;
 	double speed = 2;
+	Terrain[][][] grid;
 	boolean atDestination = true;
 	Direction direction = Direction.DOWN;
 	AnimationSequence movingRight = new AnimationSequence("resources/heroRight.png");
 	
-	public Hero(int health,int maxHealth,int logicX,int logicY){
+	public Hero(int health,int maxHealth,int logicX,int logicY,Terrain[][][] grid){
+		this.grid = grid;
 		this.health =  health;
 		this.maxHealth = maxHealth;
 		this.logicX = logicX;
@@ -57,7 +59,7 @@ public class Hero implements unit{
 	}
 
 	@Override
-	public void update(int delta,Terrain[][][] grid) {
+	public void update(int delta) {
 		if(grid[logicX][logicY][1] != null){
 			grid[logicX][logicY][1].activate(this);
 		}

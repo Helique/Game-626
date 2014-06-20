@@ -2,7 +2,7 @@ package practiceGame;
 
 public interface unit {
 	public void draw(RenderCollator renderer);
-	public void update(int delta,Terrain[][][] map);
+	//public void update(int delta,Terrain[][][] map);
 	public void setLocation(int x, int y);
 	public void setX(int x);
 	public void setY(int y);
@@ -12,6 +12,7 @@ public interface unit {
 	public double getY();
 	public int getWidth();
 	public int getHeight();
+	void update(int delta);
 	
 	
 	
