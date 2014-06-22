@@ -13,7 +13,8 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
 public class RenderCollator {
-	HashMap<String,TextureList> textures= new HashMap<String,TextureList>(); 
+	HashMap<String,TextureList> textures= new HashMap<String,TextureList>();
+
 	public void loadTexture(String location){
 		Texture t = null;
 		try {

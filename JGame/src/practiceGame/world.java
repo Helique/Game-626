@@ -8,13 +8,14 @@ import org.lwjgl.util.vector.Vector4f;
 
 public class world {
 	public static int BLOCK_SIZE = 32;
-	RenderCollator renderer = new RenderCollator();
+	public static RenderCollator renderer = new RenderCollator();
 	int offset = 0;
 	boolean HeroMoveRight =  false;
 	boolean HeroMoveLeft =  false;
 	boolean HeroMoveDown =  false;
 	boolean HeroMoveUp =  false;
 	Terrain[][][] grid;
+	Building heroHouse = new Building(TerrainType.PLAYERHOUSE,1,7,1,this);
 	Hero firstPlayer;
 	
 	public static world importWorld(){
@@ -40,6 +41,7 @@ public class world {
 		renderer.loadTexture("resources/grassTexture.png");
 		renderer.loadTexture("resources/bud.png");
 		renderer.loadTexture("resources/tape.png");
+		renderer.loadTexture("resources/heroHouse.png");
 		grid = new Terrain[12][12][3];
 		for(int i = 0; i < grid.length;i++){
 			for(int j = 0; j <grid[i].length;j ++){
@@ -67,14 +69,14 @@ public class world {
 		grid[2][1][1] = new Collectable(TerrainType.BUD, 2, 1, 1, this);
 		grid[9][8][1] = new Collectable(TerrainType.TAPE, 9, 8, 1,this);
 		grid[1][1][1] = new Collectable(TerrainType.TAPE, 1, 1, 1,this);
+		buildings.add(heroHouse);
 	}
 	public void draw(){
 		for(int i = 0; i < grid.length;i++){
 			for(int j = 0; j <grid[i].length;j ++){
 				if(grid[j][i][0] != null){
-
+					grid[j][i][0].render();
 					
-					renderer.addRender(grid[j][i][0].getType().location, world.BLOCK_SIZE *j + offset, world.BLOCK_SIZE*i + offset, BLOCK_SIZE, BLOCK_SIZE,new Vector4f(0,0,1,1));
 				}
 				
 			}
@@ -82,23 +84,40 @@ public class world {
 		for(int i =0; i<firstPlayer.logicY;i++){
 			for(int j = 0; j <grid[i].length;j ++){
 				if(grid[j][i][1] != null){
-					
-					renderer.addRender(grid[j][i][1].getType().location, world.BLOCK_SIZE *j + offset, world.BLOCK_SIZE*i + offset, BLOCK_SIZE, BLOCK_SIZE,new Vector4f(0,0,1,1));
+					grid[j][i][1].render();
 				}
 			}
 		}
 		renderer.render((int) ((firstPlayer.renderX)-boot.screenWidth/2), (int) ((firstPlayer.renderY)-boot.screenHeight/2));
+		
+		renderer.clear();
+		for(Building b: buildings){
+			if((b.logicY + b.logicH) <= firstPlayer.logicY){
+				b.renderBuilding();
+			}
+		}
+		renderer.render((int) ((firstPlayer.renderX)-boot.screenWidth/2), (int) ((firstPlayer.renderY)-boot.screenHeight/2));
+		
 		renderer.clear();
 		firstPlayer.draw(renderer);
+		renderer.render((int) ((firstPlayer.renderX)-boot.screenWidth/2), (int) ((firstPlayer.renderY)-boot.screenHeight/2));
+		
+		renderer.clear();
 		for(int i =firstPlayer.logicY; i<grid.length;i++){
 			for(int j = 0; j <grid[i].length;j ++){
 				if(grid[j][i][1] != null){
 					
+					grid[j][i][1].render();
 					
-					renderer.addRender(grid[j][i][1].getType().location, world.BLOCK_SIZE *j + offset, world.BLOCK_SIZE*i + offset, BLOCK_SIZE, BLOCK_SIZE,new Vector4f(0,0,1,1));
 				}
 			}
 		}
+		for(Building b: buildings){
+			if((b.logicY + b.logicH) > firstPlayer.logicY){
+				b.renderBuilding();
+			}
+		}
+		
 		renderer.render((int) ((firstPlayer.renderX)-boot.screenWidth/2), (int) ((firstPlayer.renderY)-boot.screenHeight/2));
 		renderer.clear();
 	}

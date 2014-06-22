@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.lwjgl.util.vector.Vector4f;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
@@ -27,6 +28,8 @@ public class Terrain {
 	int logicY;
 	int logicZ;
 	protected world parent;
+	protected int height = 32;
+	protected int width = 32;
 	public Terrain(TerrainType type, int x, int y, int z, world parent) {
 		Animation = new AnimationSequence(type.location);
 		this.type = type;
@@ -63,5 +66,8 @@ public class Terrain {
 	}
 	public void setY(float y) {
 		this.y = y;
+	}
+	public void render(){
+		world.renderer.addRender(this.type.location, world.BLOCK_SIZE * this.logicX, world.BLOCK_SIZE*this.logicY , this.height, this.width,new Vector4f(0,0,1,1));
 	}
 }
