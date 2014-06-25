@@ -8,8 +8,8 @@ public interface unit {
 	public void setY(int y);
 	public void intersects(unit unit);
 	public boolean walkThrough(Direction walkingDirection,unit unit);
-	public double getX();
-	public double getY();
+	public int getX();
+	public int getY();
 	public int getWidth();
 	public int getHeight();
 	void update(int delta);

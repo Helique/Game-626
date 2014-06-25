@@ -9,12 +9,11 @@ import org.lwjgl.util.vector.Vector4f;
 public class world {
 	public static int BLOCK_SIZE = 32;
 	public static RenderCollator renderer = new RenderCollator();
-	int offset = 0;
 	boolean HeroMoveRight =  false;
 	boolean HeroMoveLeft =  false;
 	boolean HeroMoveDown =  false;
 	boolean HeroMoveUp =  false;
-	Terrain[][][] grid;
+	Area level1 = null;
 	Building heroHouse = new Building(TerrainType.PLAYERHOUSE,1,7,1,this);
 	Hero firstPlayer;
 	
@@ -29,6 +28,40 @@ public class world {
 	public static void saveWorld(){
 		
 	}
+	public Area generateLevel1(){
+		Area level = new Area(12,12,this);
+		for(int i = 0; i < level.getWidth();i++){
+			for(int j = 0; j <level.getHeight();j ++){
+				level.addTerrain(i, j, new Terrain(TerrainType.DIRT, i,j,0,this)); 
+				//renderer.addRender("resources/dirt.png0", world.BLOCK_SIZE *j + offset, world.BLOCK_SIZE*i + offset, BLOCK_SIZE, BLOCK_SIZE,new Vector4f(0,0,1,1));
+				
+			}
+		}
+		for(int i = 0; i < level.getWidth();i++){
+			level.addTerrain(i, 0, new Terrain(TerrainType.STONE,i,0,0,this));
+			level.addTerrain(i, level.getHeight()-1, new Terrain(TerrainType.STONE,  i,level.getHeight()-1, 0, this));
+		}
+		for(int i = 0; i < level.getHeight();i++){
+			level.addTerrain(0, i, new Terrain(TerrainType.STONE,0,i,0,this));
+			level.addTerrain(level.getWidth()-1,i, new Terrain(TerrainType.STONE,  level.getWidth()-1,i, 0, this));
+			
+		}
+		level.addTerrain(4, 4,new Terrain(TerrainType.STONE, 4, 4, 0, this));
+		
+		level.addObject(6, 6,new Terrain(TerrainType.GRASS, 6, 6, 1, this));
+		level.addObject(7, 6,new Terrain(TerrainType.GRASS, 7, 6, 1, this));
+		level.addObject(6, 7,new Terrain(TerrainType.GRASS, 6, 7, 1, this));
+		level.addObject(7, 7,new Terrain(TerrainType.GRASS, 7, 7, 1, this));
+		
+		
+		level.addObject(1, 7, heroHouse);
+		level.addObject(8, 8, new Collectable(TerrainType.BUD, 8, 8, 1, this));
+		level.addObject(2, 1, new Collectable(TerrainType.BUD, 2, 1, 1, this));
+		level.addObject(9, 8, new Collectable(TerrainType.TAPE, 9, 8, 1,this));
+		level.addObject(1, 1, new Collectable(TerrainType.TAPE, 1, 1, 1,this));
+		
+		return level;
+	}
 	public world(){
 		
 		renderer.loadTexture("resources/tankRight.png");
@@ -42,60 +75,25 @@ public class world {
 		renderer.loadTexture("resources/bud.png");
 		renderer.loadTexture("resources/tape.png");
 		renderer.loadTexture("resources/heroHouse.png");
-		grid = new Terrain[12][12][3];
-		for(int i = 0; i < grid.length;i++){
-			for(int j = 0; j <grid[i].length;j ++){
-				grid[i][j][0] = new Terrain(TerrainType.DIRT, j,i,0,this);
-				//renderer.addRender("resources/dirt.png0", world.BLOCK_SIZE *j + offset, world.BLOCK_SIZE*i + offset, BLOCK_SIZE, BLOCK_SIZE,new Vector4f(0,0,1,1));
-				
-			}
-		}
-		for(int i = 0; i < grid.length;i++){
-			grid[i][0][0] = new Terrain(TerrainType.STONE,0,i,0,this);
-			grid[i][grid[0].length-1][0] = new Terrain(TerrainType.STONE,grid[0].length-1, i, 0, this);
-		}
-		for(int i = 0; i < grid[0].length;i++){
-			grid[0][i][0] = new Terrain(TerrainType.STONE,i,0,0,this);
-			grid[grid.length- 1][i][0] = new Terrain(TerrainType.STONE, i, grid.length-1, 0, this);
-		}
 		
-		firstPlayer = new Hero(10, 15, 3, 3,grid);
-		grid[4][4][0] = new Terrain(TerrainType.STONE, 4, 4, 1, this);
-		grid[6][6][1] = new Terrain(TerrainType.GRASS, 6, 6, 1, this);
-		grid[7][6][1] = new Terrain(TerrainType.GRASS, 7, 6, 1, this);
-		grid[6][7][1] = new Terrain(TerrainType.GRASS, 6, 7, 1, this);
-		grid[7][7][1] = new Terrain(TerrainType.GRASS, 7, 7, 1, this);
-		grid[8][8][1] = new Collectable(TerrainType.BUD, 8, 8, 1, this);
-		grid[2][1][1] = new Collectable(TerrainType.BUD, 2, 1, 1, this);
-		grid[9][8][1] = new Collectable(TerrainType.TAPE, 9, 8, 1,this);
-		grid[1][1][1] = new Collectable(TerrainType.TAPE, 1, 1, 1,this);
-		buildings.add(heroHouse);
+		
+		level1 = generateLevel1();
+		firstPlayer = new Hero(10, 15, 3, 3,level1);
+		
+		
 	}
 	public void draw(){
-		for(int i = 0; i < grid.length;i++){
-			for(int j = 0; j <grid[i].length;j ++){
-				if(grid[j][i][0] != null){
-					grid[j][i][0].render();
-					
-				}
-				
-			}
-		}
-		for(int i =0; i<firstPlayer.logicY;i++){
-			for(int j = 0; j <grid[i].length;j ++){
-				if(grid[j][i][1] != null){
-					grid[j][i][1].render();
-				}
-			}
-		}
+		level1.renderTerrain();
+		
 		renderer.render((int) ((firstPlayer.renderX)-boot.screenWidth/2), (int) ((firstPlayer.renderY)-boot.screenHeight/2));
 		
 		renderer.clear();
-		for(Building b: buildings){
-			if((b.logicY + b.logicH) <= firstPlayer.logicY){
-				b.renderBuilding();
-			}
-		}
+		level1.renderObject(0, firstPlayer.logicY);
+//		for(Building b: buildings){
+//			if((b.logicY + b.logicH) <= firstPlayer.logicY){
+//				b.renderBuilding();
+//			}
+//		}
 		renderer.render((int) ((firstPlayer.renderX)-boot.screenWidth/2), (int) ((firstPlayer.renderY)-boot.screenHeight/2));
 		
 		renderer.clear();
@@ -103,20 +101,12 @@ public class world {
 		renderer.render((int) ((firstPlayer.renderX)-boot.screenWidth/2), (int) ((firstPlayer.renderY)-boot.screenHeight/2));
 		
 		renderer.clear();
-		for(int i =firstPlayer.logicY; i<grid.length;i++){
-			for(int j = 0; j <grid[i].length;j ++){
-				if(grid[j][i][1] != null){
-					
-					grid[j][i][1].render();
-					
-				}
-			}
-		}
-		for(Building b: buildings){
-			if((b.logicY + b.logicH) > firstPlayer.logicY){
-				b.renderBuilding();
-			}
-		}
+		level1.renderObject(firstPlayer.logicY,level1.height);
+//		for(Building b: buildings){
+//			if((b.logicY + b.logicH) > firstPlayer.logicY){
+//				b.renderBuilding();
+//			}
+//		}
 		
 		renderer.render((int) ((firstPlayer.renderX)-boot.screenWidth/2), (int) ((firstPlayer.renderY)-boot.screenHeight/2));
 		renderer.clear();
@@ -152,10 +142,10 @@ public class world {
 		HeroMoveRight = Keyboard.isKeyDown(Keyboard.KEY_D);
 		
 	}
-	ArrayList<Building> buildings = new ArrayList<Building>();
+	
 
 	public void removeTerrain(int logicX, int logicY, int logicZ) {
-		this.grid[logicX][logicY][logicZ] = null;
+		level1.removeTile(logicX, logicY, logicZ);
 		
 	}
 	

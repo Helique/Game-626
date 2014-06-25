@@ -27,6 +27,8 @@ public class Terrain {
 	int logicX;
 	int logicY;
 	int logicZ;
+	protected int logicH = 1;
+	protected int logicW = 1;
 	protected world parent;
 	protected int height = 32;
 	protected int width = 32;
@@ -40,6 +42,9 @@ public class Terrain {
 		
 	}
 	public boolean walkThrough(Direction walkingDirection,unit unit){
+		if(this.type == TerrainType.STONE){
+			return false;
+		}
 		return true;
 	}
 	public void activate(Hero activatingPlayer){

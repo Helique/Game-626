@@ -18,13 +18,13 @@ public class Hero implements unit{
 	int destinationX;
 	int destinationY;
 	double speed = 2;
-	Terrain[][][] grid;
+	Area grid;
 	boolean atDestination = true;
 	Bag backPack = new Bag();
 	Direction direction = Direction.DOWN;
 	AnimationSequence movingRight = new AnimationSequence("resources/heroRight.png");
 	
-	public Hero(int health,int maxHealth,int logicX,int logicY,Terrain[][][] grid){
+	public Hero(int health,int maxHealth,int logicX,int logicY,Area grid){
 		this.grid = grid;
 		this.health =  health;
 		this.maxHealth = maxHealth;
@@ -49,23 +49,23 @@ public class Hero implements unit{
 	}
 	public void draw(RenderCollator renderer) {
 		if(direction == Direction.LEFT){
-			renderer.addRender("resources/heroLeft.png0",(int) renderX,(int) renderY, world.BLOCK_SIZE + 16, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
+			world.renderer.addRender("resources/heroLeft.png0",(int) renderX,(int) renderY, world.BLOCK_SIZE + 16, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
 		}else if(direction == Direction.RIGHT){
-			renderer.addRender("resources/heroRight.png0",(int) renderX,(int) renderY, world.BLOCK_SIZE + 16, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
+			world.renderer.addRender("resources/heroRight.png0",(int) renderX,(int) renderY, world.BLOCK_SIZE + 16, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
 		}else if(direction == Direction.DOWN){
-			renderer.addRender("resources/heroFront.png0",(int) renderX,(int) renderY, world.BLOCK_SIZE + 16, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
+			world.renderer.addRender("resources/heroFront.png0",(int) renderX,(int) renderY, world.BLOCK_SIZE + 16, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
 		}else if(direction == Direction.UP){
-			renderer.addRender("resources/heroBack.png0",(int) renderX,(int) renderY, world.BLOCK_SIZE + 16, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
+			world.renderer.addRender("resources/heroBack.png0",(int) renderX,(int) renderY, world.BLOCK_SIZE + 16, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
 		}
 	}
 
 	@Override
 	public void update(int delta) {
-		if(grid[logicX][logicY][1] != null){
-			grid[logicX][logicY][1].activate(this);
+		if(grid.getTerrain(logicX, logicY, 1) != null){
+			grid.getTerrain(logicX, logicY, 1).activate(this);
 		}
 		if(atDestination == false){
-			if(grid[logicX+destinationX][logicY+destinationY][0].getType() != TerrainType.STONE){
+			if(grid.getTerrain(logicX +destinationX, logicY + destinationY, 0).walkThrough(null, this)){
 				if(destinationX >0){
 					renderX += speed;
 					direction = Direction.RIGHT;
@@ -85,7 +85,7 @@ public class Hero implements unit{
 					logicX +=destinationX;
 					logicY +=destinationY;
 				}
-			} else if (grid[logicX+destinationX][logicY+destinationY][0].getType() == TerrainType.STONE){
+			} else if (!grid.getTerrain(logicX +destinationX, logicY + destinationY, 0).walkThrough(null, this)){
 				destinationX = 0;
 				destinationY = 0;
 				atDestination = true;
@@ -120,15 +120,15 @@ public class Hero implements unit{
 	}
 
 	@Override
-	public double getX() {
+	public int getX() {
 		// TODO Auto-generated method stub
-		return 0;
+		return logicX;
 	}
 
 	@Override
-	public double getY() {
+	public int getY() {
 		// TODO Auto-generated method stub
-		return 0;
+		return logicY;
 	}
 
 	@Override
