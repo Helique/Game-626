@@ -1,4 +1,4 @@
-package practiceGame;
+package worldObjects;
 
 public enum TerrainType {
 	STONE("resources/stone.png0"), AIR("resources/air.png0"), GRASS("resources/grassTexture.png0"), DIRT("resources/dirt.png0"), 

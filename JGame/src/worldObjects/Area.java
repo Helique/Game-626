@@ -1,6 +1,8 @@
-package practiceGame;
+package worldObjects;
 
 import java.util.ArrayList;
+
+import mainBootable.world;
 
 public class Area {
 	Terrain[][][] grid;

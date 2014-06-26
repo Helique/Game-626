@@ -1,6 +1,12 @@
-package practiceGame;
+package worldObjects;
+
+import mainBootable.world;
 
 import org.lwjgl.util.vector.Vector4f;
+
+import players.Hero;
+import players.unit;
+import utility.Direction;
 
 public class Building extends Terrain{
 	int height = 96;

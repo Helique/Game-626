@@ -2,7 +2,7 @@ package tests;
 
 import java.util.ArrayList;
 
-import practiceGame.Terrain;
+import worldObjects.Terrain;
 
 public class ReferenceTests {
 

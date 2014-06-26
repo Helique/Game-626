@@ -1,4 +1,8 @@
-package practiceGame;
+package worldObjects;
+
+import players.Hero;
+import practiceGame.ItemType;
+import mainBootable.world;
 
 public class Collectable extends Terrain {
 
@@ -10,14 +14,14 @@ public class Collectable extends Terrain {
 	public void activate(Hero activatingPlayer){
 		parent.removeTerrain(this.logicX,this.logicY,this.logicZ);
 		if(this.type == TerrainType.BUD){
-			activatingPlayer.backPack.addItem(ItemType.BUD, 1);
+			activatingPlayer.getBackPack().addItem(ItemType.BUD, 1);
 			
 		}
 		if(this.type == TerrainType.TAPE){
-			activatingPlayer.backPack.addItem(ItemType.TAPE, 1);
+			activatingPlayer.getBackPack().addItem(ItemType.TAPE, 1);
 			
 		}
-		activatingPlayer.backPack.printBag();
+		activatingPlayer.getBackPack().printBag();
 	}
 
 }

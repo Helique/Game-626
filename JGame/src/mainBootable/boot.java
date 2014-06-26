@@ -1,4 +1,4 @@
-package practiceGame;
+package mainBootable;
 
 import static org.lwjgl.opengl.GL11.*;
 

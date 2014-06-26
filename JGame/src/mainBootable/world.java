@@ -1,4 +1,7 @@
-package practiceGame;
+package mainBootable;
+
+import graphics.Overlays;
+import graphics.RenderCollator;
 
 import java.util.ArrayList;
 
@@ -6,15 +9,25 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector4f;
 
+import players.Hero;
+import worldObjects.Area;
+import worldObjects.Building;
+import worldObjects.Collectable;
+import worldObjects.Terrain;
+import worldObjects.TerrainType;
+
 public class world {
 	public static int BLOCK_SIZE = 32;
 	public static RenderCollator renderer = new RenderCollator();
+	Overlays overlay = new Overlays();
 	boolean HeroMoveRight =  false;
 	boolean HeroMoveLeft =  false;
 	boolean HeroMoveDown =  false;
 	boolean HeroMoveUp =  false;
+	boolean escapeKeyPressed = false;
 	Area level1 = null;
 	Building heroHouse = new Building(TerrainType.PLAYERHOUSE,1,7,1,this);
+	
 	Hero firstPlayer;
 	
 	public static world importWorld(){
@@ -75,7 +88,7 @@ public class world {
 		renderer.loadTexture("resources/bud.png");
 		renderer.loadTexture("resources/tape.png");
 		renderer.loadTexture("resources/heroHouse.png");
-		
+		renderer.loadTexture("resources/inventoryBG.png");
 		
 		level1 = generateLevel1();
 		firstPlayer = new Hero(10, 15, 3, 3,level1);
@@ -85,30 +98,33 @@ public class world {
 	public void draw(){
 		level1.renderTerrain();
 		
-		renderer.render((int) ((firstPlayer.renderX)-boot.screenWidth/2), (int) ((firstPlayer.renderY)-boot.screenHeight/2));
+		renderer.render((int) ((firstPlayer.getRenderX())-boot.screenWidth/2), (int) ((firstPlayer.getRenderY())-boot.screenHeight/2));
 		
 		renderer.clear();
-		level1.renderObject(0, firstPlayer.logicY);
+		level1.renderObject(0, firstPlayer.getLogicY());
 //		for(Building b: buildings){
 //			if((b.logicY + b.logicH) <= firstPlayer.logicY){
 //				b.renderBuilding();
 //			}
 //		}
-		renderer.render((int) ((firstPlayer.renderX)-boot.screenWidth/2), (int) ((firstPlayer.renderY)-boot.screenHeight/2));
+		renderer.render((int) ((firstPlayer.getRenderX())-boot.screenWidth/2), (int) ((firstPlayer.getRenderY())-boot.screenHeight/2));
 		
 		renderer.clear();
 		firstPlayer.draw(renderer);
-		renderer.render((int) ((firstPlayer.renderX)-boot.screenWidth/2), (int) ((firstPlayer.renderY)-boot.screenHeight/2));
+		renderer.render((int) ((firstPlayer.getRenderX())-boot.screenWidth/2), (int) ((firstPlayer.getRenderY())-boot.screenHeight/2));
 		
 		renderer.clear();
-		level1.renderObject(firstPlayer.logicY,level1.height);
+		level1.renderObject(firstPlayer.getLogicY(),level1.getHeight());
 //		for(Building b: buildings){
 //			if((b.logicY + b.logicH) > firstPlayer.logicY){
 //				b.renderBuilding();
 //			}
 //		}
 		
-		renderer.render((int) ((firstPlayer.renderX)-boot.screenWidth/2), (int) ((firstPlayer.renderY)-boot.screenHeight/2));
+		renderer.render((int) ((firstPlayer.getRenderX())-boot.screenWidth/2), (int) ((firstPlayer.getRenderY())-boot.screenHeight/2));
+		renderer.clear();
+		overlay.render();
+		renderer.render(0, 0);
 		renderer.clear();
 	}
 	public void update(int delta){
@@ -140,6 +156,13 @@ public class world {
 		HeroMoveDown = Keyboard.isKeyDown(Keyboard.KEY_S);
 		HeroMoveLeft = Keyboard.isKeyDown(Keyboard.KEY_A);
 		HeroMoveRight = Keyboard.isKeyDown(Keyboard.KEY_D);
+		if(!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && escapeKeyPressed){
+			escapeKeyPressed = false;
+		}else if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && (!escapeKeyPressed)){
+			escapeKeyPressed = true;
+			overlay.toggleInventory();
+		}
+		
 		
 	}
 	
@@ -148,5 +171,6 @@ public class world {
 		level1.removeTile(logicX, logicY, logicZ);
 		
 	}
+	
 	
 }

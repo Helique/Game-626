@@ -1,4 +1,7 @@
-package practiceGame;
+package players;
+
+import utility.Direction;
+import graphics.RenderCollator;
 
 public interface unit {
 	public void draw(RenderCollator renderer);

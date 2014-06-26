@@ -1,4 +1,4 @@
-package practiceGame;
+package graphics;
 
 import org.lwjgl.util.Rectangle;
 import org.lwjgl.util.vector.Vector4f;
