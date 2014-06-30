@@ -31,28 +31,36 @@ public class Terrain {
 	private AnimationSequence Animation;
 	private float x;
 	private float y;
-	int logicX;
-	int logicY;
+	private int logicX;
+	private int logicY;
 	int logicZ;
+	protected float widthTexture = 1;
+	protected float heightTexture = 1;
 	protected int logicH = 1;
 	protected int logicW = 1;
 	protected world parent;
 	protected int height = 32;
 	protected int width = 32;
-	public Terrain(TerrainType type, int x, int y, int z, world parent) {
+	boolean walkable = false;
+	public Terrain(TerrainType type, int x, int y, int z, world parent, boolean walkable) {
 		Animation = new AnimationSequence(type.location);
 		this.type = type;
-		this.logicX = x;
-		this.logicY = y;
+		if(this.type == TerrainType.DRUNKARDTABLE){
+			this.logicH = 4;
+			this.logicW = 3;
+			widthTexture = 3f/4f;
+			heightTexture = 1f;
+			
+		}
+		this.setLogicX(x);
+		this.setLogicY(y);
 		this.logicZ = z;
 		this.parent = parent;
+		this.walkable = walkable;
 		
 	}
 	public boolean walkThrough(Direction walkingDirection,unit unit){
-		if(this.type == TerrainType.STONE){
-			return false;
-		}
-		return true;
+		return walkable;
 	}
 	public void activate(Hero activatingPlayer){
 		//parent.removeTerrain(this.logicX,this.logicY,this.logicZ);
@@ -80,6 +88,18 @@ public class Terrain {
 		this.y = y;
 	}
 	public void render(){
-		world.renderer.addRender(this.type.location, world.BLOCK_SIZE * this.logicX, world.BLOCK_SIZE*this.logicY , this.height, this.width,new Vector4f(0,0,1,1));
+		world.renderer.addRender(this.type.location, world.BLOCK_SIZE * this.getLogicX(), world.BLOCK_SIZE*this.getLogicY() , world.BLOCK_SIZE*this.logicH, world.BLOCK_SIZE*this.logicW,new Vector4f(0,0,heightTexture,widthTexture));
+	}
+	public int getLogicX() {
+		return logicX;
+	}
+	public void setLogicX(int logicX) {
+		this.logicX = logicX;
+	}
+	public int getLogicY() {
+		return logicY;
+	}
+	public void setLogicY(int logicY) {
+		this.logicY = logicY;
 	}
 }

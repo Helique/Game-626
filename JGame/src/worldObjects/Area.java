@@ -2,12 +2,27 @@ package worldObjects;
 
 import java.util.ArrayList;
 
+import events.Quest;
 import mainBootable.world;
 
 public class Area {
 	Terrain[][][] grid;
 	world parent;
 	ArrayList<Building> buildings = new ArrayList<Building>();
+	private Quest areaTriggers;
+	public Quest getAreaTriggers() {
+		return areaTriggers;
+	}
+	public void setAreaTriggers(Quest areaTriggers) {
+		this.areaTriggers = areaTriggers;
+	}
+	int[][] teleLocations;
+	public int[][] getTelelocations() {
+		return teleLocations;
+	}
+	public void setTelelocations(int[][] telelocations) {
+		this.teleLocations = telelocations;
+	}
 	int height; 
 	int width;
 	public int getHeight() {
@@ -17,7 +32,7 @@ public class Area {
 		return width;
 	}
 	public Area(int height, int width, world parent){
-		grid = new Terrain[height][width][3];
+		grid = new Terrain[width][height][3];
 		this.parent = parent;
 		this.height = height;
 		this.width = width;
@@ -33,12 +48,19 @@ public class Area {
 			for (int i =x ; i< (x+t.logicW); i++){
 				for(int j = y+ b.roofHeight; j <(y+t.logicH); j++){
 					grid[i][j][1] = t;
-					grid[i][j][0] = new Terrain(TerrainType.STONE,i,j,0,parent);
+					grid[i][j][0] = new Terrain(TerrainType.STONE,i,j,0,parent, false);
 					System.out.println(t.logicW + " W:H " + t.logicH);
 				}
 			}
-			grid[b.doorX + b.logicX][b.doorY + b.logicY][0] = new Terrain(TerrainType.DIRT,b.doorX + b.logicX,b.doorY + b.logicY,0,parent);
-			
+			grid[b.getDoorX() + b.getLogicX()][b.getDoorY() + b.getLogicY()][0] = new Terrain(TerrainType.DIRT,b.getDoorX() + b.getLogicX(),b.getDoorY() + b.getLogicY(),0,parent, true);
+		} else if(t.getType() == TerrainType.DRUNKARDTABLE){
+			for (int i =x ; i< (x+t.logicW); i++){
+				for(int j = y; j <(y+t.logicH); j++){
+					grid[i][j][1] = t;
+					grid[i][j][0] = new Terrain(TerrainType.DIRT,i,j,0,parent, false);
+					System.out.println(t.logicW + " W:H " + t.logicH);
+				}
+			}
 		} else {
 			grid[x][y][1] = t;
 		}
@@ -85,7 +107,7 @@ public class Area {
 			}
 		}
 		for(Building b: buildings){
-			if(startY < (b.logicY + b.logicH) && (b.logicY + b.logicH)  <= stopY){
+			if(startY < (b.getLogicY() + b.logicH) && (b.getLogicY() + b.logicH)  <= stopY){
 				b.renderBuilding();
 			}
 		}

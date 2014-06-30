@@ -32,7 +32,9 @@ public class Hero implements unit{
 	private Bag backPack = new Bag();
 	Direction direction = Direction.DOWN;
 	AnimationSequence movingRight = new AnimationSequence("resources/heroRight.png");
-	
+	public void setArea(Area currentLocation){
+		this.grid = currentLocation;
+	}
 	public Hero(int health,int maxHealth,int logicX,int logicY,Area grid){
 		this.grid = grid;
 		this.health =  health;
@@ -70,8 +72,8 @@ public class Hero implements unit{
 
 	@Override
 	public void update(int delta) {
-		if(grid.getTerrain(logicX, getLogicY(), 1) != null){
-			grid.getTerrain(logicX, getLogicY(), 1).activate(this);
+		if(grid.getTerrain(logicX, logicY, 1) != null){
+			grid.getTerrain(logicX, logicY, 1).activate(this);
 		}
 		if(atDestination == false){
 			if(grid.getTerrain(logicX +destinationX, getLogicY() + destinationY, 0).walkThrough(null, this)){
@@ -106,7 +108,14 @@ public class Hero implements unit{
 
 	@Override
 	public void setLocation(int x, int y) {
-		// TODO Auto-generated method stub
+		this.atDestination = true;
+		this.destinationX = 0;
+		this.destinationY = 0;
+		this.logicX = x;
+		this.logicY = y;
+		setRenderX(logicX * world.BLOCK_SIZE);
+		setRenderY(logicY * world.BLOCK_SIZE - 16);
+		
 		
 	}
 
@@ -137,7 +146,7 @@ public class Hero implements unit{
 	@Override
 	public int getY() {
 		// TODO Auto-generated method stub
-		return getLogicY();
+		return logicY;
 	}
 
 	@Override

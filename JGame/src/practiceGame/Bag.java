@@ -38,6 +38,15 @@ public class Bag {
 		}
 		System.out.println("----[End Bag Contents]----");
 	}
+	public int getItemCount(ItemType t){
+		if(backpack.containsKey(t)){
+			return backpack.get(t).number;
+		} else {
+			return 0;
+		}
+		
+		
+	}
 	
 	
 }
