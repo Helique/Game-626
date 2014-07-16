@@ -8,11 +8,14 @@ import events.TriggerType;
 import graphics.Overlays;
 import graphics.RenderCollator;
 
+import java.awt.event.KeyAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
 
 import players.Hero;
 import practiceGame.ItemStack;
@@ -145,6 +148,14 @@ public class world {
 			escapeKeyPressed = true;
 			overlay.toggleInventory();
 		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_M)){
+			try {
+				Display.setFullscreen(false);
+			} catch (LWJGLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		
 	}
@@ -232,7 +243,7 @@ public class world {
 			level.addTerrain(level.getWidth()-1,i, new Terrain(TerrainType.STONE,  level.getWidth()-1,i, 0, this, false));
 			
 		}
-		level.addTerrain(4, 4,new Terrain(TerrainType.STONE, 4, 4, 0, this, true));
+		level.addTerrain(4, 4,new Terrain(TerrainType.STONE, 4, 4, 0, this, false));
 		
 		level.addObject(6, 6,new Terrain(TerrainType.GRASS, 6, 6, 1, this, true));
 		level.addObject(7, 6,new Terrain(TerrainType.GRASS, 7, 6, 1, this, true));

@@ -22,22 +22,40 @@ import org.lwjgl.opengl.DisplayMode;
 
 public class boot {
 	world welt;
-//	public static int screenWidth = 640;
-//	public static int screenHeight = 480;
-	public static int screenWidth = 960;
-	public static int screenHeight = 800;
+	public static int screenWidth = 1600;
+	public static int screenHeight = 900;
+//	public static int screenWidth = 1920;
+//	public static int screenHeight = 1080;
+	boolean startInFullScreen = false;
 	public boot(){
 		
 		try {
 			//Display.setDisplayMode(new DisplayMode(640, 480));
-			Display.setDisplayMode(new DisplayMode(960, 800));
+			DisplayMode meh = new DisplayMode(screenWidth,screenHeight);
+			//Display.setDisplayMode( meh );
 			
+			DisplayMode[] d = Display.getAvailableDisplayModes();
+			for(DisplayMode dM:d){
+				if(dM.isFullscreenCapable() ==true){
+					if(dM.getHeight() == screenHeight){
+						if(dM.getWidth() == screenWidth){
+							if(dM.getFrequency() == 60){
+								Display.setDisplayMode(dM);
+							}
+						}
+					}
+				}
+			}
+			System.out.println(meh.isFullscreenCapable());
+			Display.setResizable(true);
 			Display.setTitle("Test Game");
+			
 			Display.create();
 		} catch (LWJGLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		welt = new world();
 		//grid.setAt(10, 10, BlockType.STONE);
 		//init code for OGL
@@ -48,7 +66,13 @@ public class boot {
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		
+		try {
+			Display.setFullscreen(startInFullScreen);
+		} catch (LWJGLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Display.setVSyncEnabled(true);
 		
 		while(!Display.isCloseRequested()){
 			// Render

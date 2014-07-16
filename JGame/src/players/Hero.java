@@ -19,6 +19,7 @@ import worldObjects.Area;
 
 public class Hero implements unit{
 	int health;
+	static int halfBlockSize = world.BLOCK_SIZE/2;
 	int maxHealth;
 	int logicX;
 	private int logicY;
@@ -26,8 +27,9 @@ public class Hero implements unit{
 	private double renderY;
 	int destinationX;
 	int destinationY;
-	double speed = 2;
+	double speed = 4;
 	Area grid;
+	
 	boolean atDestination = true;
 	private Bag backPack = new Bag();
 	Direction direction = Direction.DOWN;
@@ -42,7 +44,8 @@ public class Hero implements unit{
 		this.logicX = logicX;
 		this.setLogicY(logicY);
 		setRenderX(logicX * world.BLOCK_SIZE);
-		setRenderY(logicY * world.BLOCK_SIZE - 16);
+		setRenderY(logicY * world.BLOCK_SIZE - halfBlockSize);
+		//setRenderY(logicY * world.BLOCK_SIZE);
 	}
 	public void setDirection (Direction direction){
 		this.direction = direction;
@@ -50,7 +53,7 @@ public class Hero implements unit{
 	public void move(int destinationX,int destinationY){
 		if(atDestination){
 			setRenderX(logicX * world.BLOCK_SIZE);
-			setRenderY(getLogicY() * world.BLOCK_SIZE - 16);
+			setRenderY(getLogicY() * world.BLOCK_SIZE - halfBlockSize);
 			this.destinationX = destinationX;
 			this.destinationY = destinationY;
 		}
@@ -60,13 +63,13 @@ public class Hero implements unit{
 	}
 	public void draw(RenderCollator renderer) {
 		if(direction == Direction.LEFT){
-			world.renderer.addRender("resources/heroLeft.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE + 16, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
+			world.renderer.addRender("resources/heroLeft.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE + halfBlockSize, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
 		}else if(direction == Direction.RIGHT){
-			world.renderer.addRender("resources/heroRight.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE + 16, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
+			world.renderer.addRender("resources/heroRight.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE + halfBlockSize, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
 		}else if(direction == Direction.DOWN){
-			world.renderer.addRender("resources/heroFront.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE + 16, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
+			world.renderer.addRender("resources/heroFront.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE + halfBlockSize, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
 		}else if(direction == Direction.UP){
-			world.renderer.addRender("resources/heroBack.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE + 16, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
+			world.renderer.addRender("resources/heroBack.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE + halfBlockSize, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
 		}
 	}
 
@@ -91,7 +94,7 @@ public class Hero implements unit{
 					setRenderY(getRenderY() - speed);
 					direction = Direction.UP;
 				}
-				if(getRenderX() == ((logicX+destinationX) * world.BLOCK_SIZE) && (getRenderY() == (getLogicY()+destinationY) * world.BLOCK_SIZE - 16)){
+				if(getRenderX() == ((logicX+destinationX) * world.BLOCK_SIZE) && (getRenderY() == (getLogicY()+destinationY) * world.BLOCK_SIZE - halfBlockSize)){
 					atDestination = true;
 					logicX +=destinationX;
 					setLogicY(getLogicY() + destinationY);
@@ -114,7 +117,7 @@ public class Hero implements unit{
 		this.logicX = x;
 		this.logicY = y;
 		setRenderX(logicX * world.BLOCK_SIZE);
-		setRenderY(logicY * world.BLOCK_SIZE - 16);
+		setRenderY(logicY * world.BLOCK_SIZE - halfBlockSize);
 		
 		
 	}
