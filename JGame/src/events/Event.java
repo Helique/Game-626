@@ -1,15 +1,19 @@
 package events;
 
-import audio.SoundClipLibrary;
+import java.io.FileNotFoundException;
+
+import audio.*;
 
 public class Event {
 	int eventNumber =0;
 	private EventType type = null;
 	String area;
 	int TeleportationLocation;
+				//AudioEngine audioEngine;
 	//Event
 	public Event(EventType t){
 		this.type = t;	
+				//AudioEngine audioEngine = new AudioEngine();
 	}
 	public EventType getType() {
 		return type;
@@ -31,7 +35,9 @@ public class Event {
 	}
 	
 	//sound effect
-	public void playSoundEffect(SoundClipLibrary sound){
-		
+	public void playSoundEffect(SoundClipLibrary sound) throws FileNotFoundException{
+		String audioFileLocation = sound.getFileLocation();
+				//audioEngine.play(audioFileLocation);
+		new AudioEngine().play(audioFileLocation);
 	}
 }
