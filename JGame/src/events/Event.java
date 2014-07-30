@@ -35,9 +35,7 @@ public class Event {
 	}
 	
 	//sound effect
-	public void playSoundEffect(SoundClipLibrary sound) throws FileNotFoundException{
-		String audioFileLocation = sound.getFileLocation();
-				//audioEngine.play(audioFileLocation);
-		new AudioEngine().play(audioFileLocation);
+	public static void playSoundEffect(SoundClipLibrary sound){
+		//In Developement
 	}
 }

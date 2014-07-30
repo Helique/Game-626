@@ -9,6 +9,7 @@ import graphics.Overlays;
 import graphics.RenderCollator;
 
 import java.awt.event.KeyAdapter;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,6 +18,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
+import audio.SoundClipLibrary;
 import players.Hero;
 import practiceGame.ItemStack;
 import practiceGame.ItemType;
@@ -165,7 +167,7 @@ public class world {
 		currentArea.removeTile(logicX, logicY, logicZ);
 		
 	}
-	private void processLevelQuest(){
+	private void processLevelQuest()/* throws FileNotFoundException*/{
 		ArrayList<Integer> removeTriggers = new ArrayList<Integer>();
 		ArrayList<Integer> activateTriggers = new ArrayList<Integer>();
 		for(Trigger t:currentArea.getAreaTriggers().getActivatedTriggers().values()){
@@ -200,6 +202,7 @@ public class world {
 		}
 		for(int i:activateTriggers){
 			currentArea.getAreaTriggers().activateTrigger(i);
+			Event.playSoundEffect(SoundClipLibrary.DOOR_CREAK);
 		}
 	}
 	public Area generateLevel1(){
