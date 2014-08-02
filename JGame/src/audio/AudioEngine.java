@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import static org.lwjgl.openal.AL10.*;
 
 public class AudioEngine {
-	static ArrayList<WaveData> data;
-	static ArrayList<Integer> buffer;
-	static ArrayList<Integer> source;
-	static ArrayList<String> Index;
+	static ArrayList<WaveData> data = new ArrayList<WaveData>();
+	static ArrayList<Integer> buffer = new ArrayList<Integer>();
+	static ArrayList<Integer> source = new ArrayList<Integer>();
+	static ArrayList<String> Index = new ArrayList<String>();
 	static int nextAvailableIndex = 0;
 	
 //	WaveData data1;
@@ -45,7 +45,9 @@ public class AudioEngine {
 		String filePath = sound.getFileLocation();
 		int currentIndex = nextAvailableIndex;
 		try {
+			System.out.println(filePath);
 			data.add(WaveData.create(new BufferedInputStream(new FileInputStream(filePath))));
+			//WaveData data = WaveData.create(new BufferedInputStream(new FileInputStream(filePath)));
 		} catch (FileNotFoundException e) {
 			System.out.println("----------------------------------------------");
 			System.out.println("----------------------------------------------");
@@ -68,11 +70,15 @@ public class AudioEngine {
 		}
 	}
 	
-	public void play(SoundClipLibrary sound){
-		String audioFilePath = sound.getFileLocation();
-		int location = findAssetData(audioFilePath);
-		alSourcei(source.get(location), AL_BUFFER, buffer.get(location));
-		alSourcePlay(source.get(location));
+	public void play(final SoundClipLibrary sound){
+		new Thread(){
+		    public void run(){
+		      	String audioFilePath = sound.getFileLocation();
+		      	int location = findAssetData(audioFilePath);
+		      	alSourcei(source.get(location), AL_BUFFER, buffer.get(location));
+		      	alSourcePlay(source.get(location));
+		    }
+		}.start();
 	}
 	
 	public int findAssetData(String filePath){

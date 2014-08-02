@@ -18,6 +18,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
+import audio.AudioEngine;
 import audio.SoundClipLibrary;
 import players.Hero;
 import practiceGame.ItemStack;
@@ -43,6 +44,7 @@ public class world {
 	Event activeEvent = null;
 	Area currentArea = null;
 	Building heroHouse = new Building(TerrainType.PLAYERHOUSE,1,7,1,this, false);
+	public static AudioEngine audioEngine = new AudioEngine();
 	
 	Hero firstPlayer;
 	
@@ -72,6 +74,8 @@ public class world {
 		renderer.loadTexture("resources/heroHouse.png");
 		renderer.loadTexture("resources/inventoryBG.png");
 		renderer.loadTexture("resources/drunkardTable.png");
+		//load audio files
+		audioEngine.load(SoundClipLibrary.DOOR_CREAK);
 		
 		currentArea = generateLevel1();
 		firstPlayer = new Hero(10, 15, 3, 3,currentArea);
@@ -202,10 +206,13 @@ public class world {
 		}
 		for(int i:activateTriggers){
 			currentArea.getAreaTriggers().activateTrigger(i);
-			Event.playSoundEffect(SoundClipLibrary.DOOR_CREAK);
+			
+			audioEngine.play(SoundClipLibrary.DOOR_CREAK);
+			//Event.playSoundEffect(SoundClipLibrary.DOOR_CREAK);
 		}
 	}
 	public Area generateLevel1(){
+		
 		Trigger t = new Trigger(TriggerType.LOCATION,0);
 		t.setLocation(heroHouse.getDoorX()+heroHouse.getLogicX(),heroHouse.getDoorY()+heroHouse.getLogicY());
 		int[] t1ActivationTriggers = {1,2};

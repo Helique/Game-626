@@ -2,6 +2,7 @@ package events;
 
 import java.io.FileNotFoundException;
 
+import mainBootable.world;
 import audio.*;
 
 public class Event {
@@ -9,7 +10,7 @@ public class Event {
 	private EventType type = null;
 	String area;
 	int TeleportationLocation;
-				//AudioEngine audioEngine;
+	//static AudioEngine audioEngine = world.audioEngine;
 	//Event
 	public Event(EventType t){
 		this.type = t;	
@@ -37,5 +38,6 @@ public class Event {
 	//sound effect
 	public static void playSoundEffect(SoundClipLibrary sound){
 		//In Developement
+		world.audioEngine.play(sound);
 	}
 }
