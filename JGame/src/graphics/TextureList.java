@@ -97,10 +97,13 @@ public class TextureList {
 				GL11.glDrawElements(GL11.GL_QUADS, indicesCount, GL11.GL_UNSIGNED_SHORT, 0);			
 			// Put everything back to default (deselect)
 			GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+			GL15.glDeleteBuffers(vboId);
+			GL15.glDeleteBuffers(vboiId);
 			GL20.glDisableVertexAttribArray(0);
 			GL20.glDisableVertexAttribArray(1);
 			GL20.glDisableVertexAttribArray(2);
 		GL30.glBindVertexArray(0);
+		GL30.glDeleteVertexArrays(vaoId);
 		
 	}
 	
