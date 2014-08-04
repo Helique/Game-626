@@ -16,8 +16,11 @@ import static org.lwjgl.opengl.GL11.glMatrixMode;
 import static org.lwjgl.opengl.GL11.glOrtho;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.PixelFormat;
 
 
 public class boot {
@@ -50,22 +53,21 @@ public class boot {
 			Display.setResizable(true);
 			Display.setTitle("Test Game");
 			
+			
 			Display.create();
+			
+			
 		} catch (LWJGLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		welt = new world();
-		//grid.setAt(10, 10, BlockType.STONE);
-		//init code for OGL
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glOrtho(0,screenWidth,screenHeight, 0, 1, -1);
-		glMatrixMode(GL_MODELVIEW);
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL11.GL_CULL_FACE);
+		GL11.glCullFace(GL11.GL_BACK);
 		try {
 			Display.setFullscreen(startInFullScreen);
 		} catch (LWJGLException e) {
