@@ -23,11 +23,14 @@ public class boot {
 	world welt;
 	public static int screenWidth = 1600;
 	public static int screenHeight = 900;
-//	public static int screenWidth = 1920;
-//	public static int screenHeight = 1080;
-	boolean startInFullScreen = false;
+	
+	boolean startInFullScreen = true;
+	
 	public boot(){
-		
+		if(startInFullScreen){
+			screenWidth = 1920;
+			screenHeight = 1080;
+		}
 		try {
 			//Display.setDisplayMode(new DisplayMode(640, 480));
 			DisplayMode meh = new DisplayMode(screenWidth,screenHeight);

@@ -9,6 +9,7 @@ import graphics.Overlays;
 import graphics.RenderCollator;
 
 import java.awt.event.KeyAdapter;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,6 +20,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Vector4f;
 
+import audio.AudioEngine;
+import audio.SoundClipLibrary;
 import players.Hero;
 import practiceGame.ItemStack;
 import practiceGame.ItemType;
@@ -44,6 +47,7 @@ public class world {
 	Event activeEvent = null;
 	Area currentArea = null;
 	Building heroHouse = new Building(TerrainType.PLAYERHOUSE,1,7,1,this, false);
+	public static AudioEngine audioEngine = new AudioEngine();
 	
 	Hero firstPlayer;
 	private int pId;
@@ -74,6 +78,8 @@ public class world {
 		renderer.loadTexture("resources/heroHouse.png");
 		renderer.loadTexture("resources/inventoryBG.png");
 		renderer.loadTexture("resources/drunkardTable.png");
+		//load audio files
+		audioEngine.load(SoundClipLibrary.DOOR_CREAK);
 		
 		currentArea = generateLevel1();
 		firstPlayer = new Hero(10, 15, 3, 3,currentArea);
@@ -173,7 +179,7 @@ public class world {
 		currentArea.removeTile(logicX, logicY, logicZ);
 		
 	}
-	private void processLevelQuest(){
+	private void processLevelQuest()/* throws FileNotFoundException*/{
 		ArrayList<Integer> removeTriggers = new ArrayList<Integer>();
 		ArrayList<Integer> activateTriggers = new ArrayList<Integer>();
 		for(Trigger t:currentArea.getAreaTriggers().getActivatedTriggers().values()){
@@ -208,9 +214,13 @@ public class world {
 		}
 		for(int i:activateTriggers){
 			currentArea.getAreaTriggers().activateTrigger(i);
+			
+			audioEngine.play(SoundClipLibrary.DOOR_CREAK);
+			//Event.playSoundEffect(SoundClipLibrary.DOOR_CREAK);
 		}
 	}
 	public Area generateLevel1(){
+		
 		Trigger t = new Trigger(TriggerType.LOCATION,0);
 		t.setLocation(heroHouse.getDoorX()+heroHouse.getLogicX(),heroHouse.getDoorY()+heroHouse.getLogicY());
 		int[] t1ActivationTriggers = {1,2};
