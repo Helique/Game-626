@@ -7,11 +7,21 @@ import org.lwjgl.util.WaveData;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
+
+import javax.swing.text.MaskFormatter;
 
 import static org.lwjgl.openal.AL10.*;
 
+/**
+ * @author Can
+ *
+ */
 public class AudioEngine {
+	static FloatBuffer  mvb = org.lwjgl.BufferUtils.createFloatBuffer(1);//master volume buffer
+	static float masterVolume = 1.0f;
+	
 	static ArrayList<WaveData> data = new ArrayList<WaveData>();
 	static ArrayList<Integer> buffer = new ArrayList<Integer>();
 	static ArrayList<Integer> source = new ArrayList<Integer>();
@@ -62,6 +72,38 @@ public class AudioEngine {
         alBufferData(buffer.get(currentIndex), data.get(currentIndex).format, data.get(currentIndex).data, data.get(currentIndex).samplerate);
 		Index.add(currentIndex, filePath);
 		nextAvailableIndex++;
+	}
+//	Replaced by AG called master, due to unnecessary repetition
+//	public static void setMasterVolume(int vol){
+//		
+//	}
+//	public static void increaseMasterVolume(AudioGroup ag, int vol){
+//		
+//	}
+//	public static void decreaseMasterVolume(AudioGroup ag, int vol){
+//		
+//	}
+	
+	public static void setGroupVolume(AudioGroup ag, int vol){//vol in percent
+		switch(ag){
+			case MASTER :
+				masterVolume = vol/200;//maximum is 0.5f, volume does not seem to get louder after that
+				mvb = null;
+				mvb = org.lwjgl.BufferUtils.createFloatBuffer(1);
+				mvb.put(masterVolume);
+				mvb.flip();
+				alListener(AL_GAIN, mvb);
+				break;
+				
+		}
+	}
+	
+	public static void increaseGroupVolume(AudioGroup ag, int delta){
+		
+	}
+	
+	public static void decreaseGroupVolume(AudioGroup ag, int delta){
+		
 	}
 	
 	public void load(SoundClipLibrary[] sound){
