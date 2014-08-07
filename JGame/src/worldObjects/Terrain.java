@@ -88,7 +88,7 @@ public class Terrain {
 		this.y = y;
 	}
 	public void render(){
-		world.renderer.addRender(this.type.location, world.BLOCK_SIZE * this.getLogicX(), world.BLOCK_SIZE*this.getLogicY() , world.BLOCK_SIZE*this.logicH, world.BLOCK_SIZE*this.logicW,new Vector4f(0,0,heightTexture,widthTexture));
+		world.renderer.addRender(this.type.location, world.BLOCK_SIZE * this.getLogicX(), world.BLOCK_SIZE*this.getLogicY() , world.BLOCK_SIZE*this.logicW,  world.BLOCK_SIZE*this.logicH, new Vector4f(0,0,widthTexture, heightTexture));
 	}
 	public int getLogicX() {
 		return logicX;

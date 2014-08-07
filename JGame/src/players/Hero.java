@@ -63,13 +63,13 @@ public class Hero implements unit{
 	}
 	public void draw(RenderCollator renderer) {
 		if(direction == Direction.LEFT){
-			world.renderer.addRender("resources/heroLeft.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE + halfBlockSize, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
+			world.renderer.addRender("resources/heroLeft.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE, world.BLOCK_SIZE + halfBlockSize, new Vector4f(0,0,1f,.75f));
 		}else if(direction == Direction.RIGHT){
-			world.renderer.addRender("resources/heroRight.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE + halfBlockSize, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
+			world.renderer.addRender("resources/heroRight.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE, world.BLOCK_SIZE + halfBlockSize, new Vector4f(0,0,1f,.75f));
 		}else if(direction == Direction.DOWN){
-			world.renderer.addRender("resources/heroFront.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE + halfBlockSize, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
+			world.renderer.addRender("resources/heroFront.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE, world.BLOCK_SIZE + halfBlockSize, new Vector4f(0,0,1f,.75f));
 		}else if(direction == Direction.UP){
-			world.renderer.addRender("resources/heroBack.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE + halfBlockSize, world.BLOCK_SIZE,new Vector4f(0,0,.75f,1f));
+			world.renderer.addRender("resources/heroBack.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE, world.BLOCK_SIZE + halfBlockSize, new Vector4f(0,0,1f,.75f));
 		}
 	}
 

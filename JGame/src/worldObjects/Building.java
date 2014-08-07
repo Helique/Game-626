@@ -24,7 +24,7 @@ public class Building extends Terrain{
 		
 	}
 	public void renderBuilding(){
-		world.renderer.addRender(this.type.location, world.BLOCK_SIZE * this.getLogicX(), world.BLOCK_SIZE*this.getLogicY() , this.height, this.width,new Vector4f(0,0,.75f,1));
+		world.renderer.addRender(this.type.location, world.BLOCK_SIZE * this.getLogicX(), world.BLOCK_SIZE*this.getLogicY() , this.width, this.height,new Vector4f(0,0,1,.75f));
 	}
 	public boolean walkThrough(Direction walkingDirection,unit unit){
 		if(unit.getY() == this.getLogicY()){

@@ -17,12 +17,15 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Vector4f;
 
 import audio.AudioEngine;
 import audio.SoundClipLibrary;
 import players.Hero;
 import practiceGame.ItemStack;
 import practiceGame.ItemType;
+import utility.ShaderLoader;
 import worldObjects.Area;
 import worldObjects.Building;
 import worldObjects.Collectable;
@@ -47,6 +50,7 @@ public class world {
 	public static AudioEngine audioEngine = new AudioEngine();
 	
 	Hero firstPlayer;
+	private int pId;
 	
 	public static world importWorld(){
 		return null;
@@ -60,7 +64,7 @@ public class world {
 		
 	}
 	public world(){
-		
+		pId = ShaderLoader.loadShaderPair("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
 		renderer.loadTexture("resources/tankRight.png");
 		renderer.loadTexture("resources/dirt.png");
 		renderer.loadTexture("resources/heroRight.png");
@@ -83,27 +87,31 @@ public class world {
 		
 	}
 	public void draw(){
+		
+		renderer.setPID(pId);
+		int cameraX =(int) ((firstPlayer.getRenderX())-boot.screenWidth/2);
+		int cameraY =(int) ((firstPlayer.getRenderY()-boot.screenHeight/2));
+		
 		currentArea.renderTerrain();
-		
-		renderer.render((int) ((firstPlayer.getRenderX())-boot.screenWidth/2), (int) ((firstPlayer.getRenderY())-boot.screenHeight/2));
-		
+		renderer.render( cameraX,cameraY );
 		renderer.clear();
+		
 		currentArea.renderObject(0, firstPlayer.getLogicY());
-
-		renderer.render((int) ((firstPlayer.getRenderX())-boot.screenWidth/2), (int) ((firstPlayer.getRenderY())-boot.screenHeight/2));
-		
+		renderer.render(cameraX,cameraY );		
 		renderer.clear();
+		
 		firstPlayer.draw(renderer);
-		renderer.render((int) ((firstPlayer.getRenderX())-boot.screenWidth/2), (int) ((firstPlayer.getRenderY())-boot.screenHeight/2));
-		
+		renderer.render(cameraX,cameraY );
 		renderer.clear();
+		
 		currentArea.renderObject(firstPlayer.getLogicY(),currentArea.getHeight());
-		
-		renderer.render((int) ((firstPlayer.getRenderX())-boot.screenWidth/2), (int) ((firstPlayer.getRenderY())-boot.screenHeight/2));
+		renderer.render(cameraX,cameraY );
 		renderer.clear();
+		
 		overlay.render();
 		renderer.render(0, 0);
 		renderer.clear();
+		
 	}
 	public void update(int delta){
 		input();
