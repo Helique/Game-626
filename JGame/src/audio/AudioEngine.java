@@ -119,7 +119,7 @@ public class AudioEngine {
 	public static void setGroupVolume(AudioGroup ag, int vol){//vol in percent
 		int agID = ag.getGroupID();
 		float newVolume = vol/100;
-		float deltaVol = (oldAudioGroupVolume.get(agID))- newVolume;
+		float deltaVol = newVolume - (oldAudioGroupVolume.get(agID));
 		
 		switch(ag){
 			case MASTER :
