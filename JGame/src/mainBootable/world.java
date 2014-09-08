@@ -21,6 +21,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Vector4f;
 
 import audio.AudioEngine;
+import audio.AudioGroup;
 import audio.SoundClipLibrary;
 import players.Hero;
 import practiceGame.ItemStack;
@@ -80,9 +81,8 @@ public class world {
 		renderer.loadTexture("resources/objects/drunkardTable");
 		//load audio files
 		
-		audioEngine.load(SoundClipLibrary.DOOR_CREAK);
 		heroHouse = new Building(renderer,TerrainType.PLAYERHOUSE,1,7,1,this, false);
-		
+		audioEngine.load(SoundClipLibrary.DOOR_CREAK, AudioGroup.SOUND_EFFECT, 100);
 		
 		currentArea = generateLevel1();
 		overlay = new Overlays(renderer);
