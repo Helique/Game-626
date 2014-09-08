@@ -1,38 +1,40 @@
 package graphics;
 
+import org.lwjgl.util.vector.Vector4f;
+
 
 public class AnimationSequence {
 
 		int index = 0;
 		int lastFrame;
-		private String SpritePath;
-		private String[] textureID;
-		public AnimationSequence(String SpriteSheetPath){
-			SpritePath = SpriteSheetPath;
-			textureID = new String[1];
-			textureID[0] = SpritePath + 0;
-			lastFrame = 0;
+		private Vector4f[] textureIndex;
+		private String SpriteSheet = null;
+		public AnimationSequence(int lastFrame, String SpriteSheet){
+			this.lastFrame = lastFrame;
+			this.SpriteSheet = SpriteSheet;
 		}
-		public String getCurrentTexture(){
-			return textureID[index];
+		public Vector4f getTextureCoords(){
+			return textureIndex[index];
 		}
-		public boolean forwardOne(){
-			index++;
-			if(index > lastFrame){
-				index = lastFrame;
-				return false;
-			} else {
-				return true;
+		
+		public int forward(int amount){
+			index += amount;
+			
+			index = index%lastFrame;
+			if (index < 0){
+				index = 6 + index;
 			}
+			return index;
 		}
-		public boolean backOne(){
-			index--;
-			if(index < 0){
-				index = 0;
-				return false;
-			} else {
-				return true;
+		
+		public int backward(int amount){
+			index -= amount;
+			
+			index = index%lastFrame;
+			if (index < 0){
+				index = 6 + index;
 			}
+			return index;
 		}
 		public void setIndex(int pos){
 			if(pos<0){
@@ -45,6 +47,9 @@ public class AnimationSequence {
 		}
 		public int getIndex(){
 			return index;
+		}
+		public void draw(RenderCollator renderer, int renderX, int renderY, int width, int height) {
+			renderer.addRender(SpriteSheet, renderX, renderY, width, height, index);
 		}
 
 	

@@ -6,7 +6,7 @@ import org.lwjgl.util.vector.Vector4f;
 public class ImageData {
 	public static int elementCount =  40;
 	
-public static final int elementBytes = 4;
+	public static final int elementBytes = 4;
 	
 	// Elements per parameter
 	public static final int positionElementCount = 4;

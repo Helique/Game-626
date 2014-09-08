@@ -1,13 +1,14 @@
 package worldObjects;
 
+import graphics.RenderCollator;
 import players.Hero;
 import practiceGame.ItemType;
 import mainBootable.world;
 
 public class Collectable extends Terrain {
 
-	public Collectable(TerrainType type, int x, int y, int z, world parent, boolean walkable) {
-		super(type, x, y, z, parent, walkable);
+	public Collectable(RenderCollator renderer,TerrainType type, int x, int y, int z, world parent, boolean walkable) {
+		super(renderer,type, x, y, z, parent, walkable);
 		// TODO Auto-generated constructor stub
 	}
 	

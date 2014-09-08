@@ -29,15 +29,19 @@ public class Hero implements unit{
 	int destinationY;
 	double speed = 4;
 	Area grid;
-	
+	RenderCollator renderer = null;
 	boolean atDestination = true;
 	private Bag backPack = new Bag();
 	Direction direction = Direction.DOWN;
-	AnimationSequence movingRight = new AnimationSequence("resources/heroRight.png");
+	AnimationSequence movingRight = null;//new AnimationSequence("resources/heroRight");
+	AnimationSequence movingLeft = null;
+	AnimationSequence movingUp = null;
+	AnimationSequence movingDown = null;
 	public void setArea(Area currentLocation){
 		this.grid = currentLocation;
 	}
-	public Hero(int health,int maxHealth,int logicX,int logicY,Area grid){
+	public Hero(RenderCollator renderer,int health,int maxHealth,int logicX,int logicY,Area grid){
+		this.renderer = renderer;
 		this.grid = grid;
 		this.health =  health;
 		this.maxHealth = maxHealth;
@@ -46,6 +50,10 @@ public class Hero implements unit{
 		setRenderX(logicX * world.BLOCK_SIZE);
 		setRenderY(logicY * world.BLOCK_SIZE - halfBlockSize);
 		//setRenderY(logicY * world.BLOCK_SIZE);
+		movingRight = renderer.createAnimation("resources/hero/heroRight");//new AnimationSequence("resources/heroRight");
+		movingLeft = renderer.createAnimation("resources/hero/heroLeft");
+		movingUp = renderer.createAnimation("resources/hero/heroBack");
+		movingDown = renderer.createAnimation("resources/hero/heroFront");
 	}
 	public void setDirection (Direction direction){
 		this.direction = direction;
@@ -61,15 +69,15 @@ public class Hero implements unit{
 		
 		
 	}
-	public void draw(RenderCollator renderer) {
+	public void draw() {
 		if(direction == Direction.LEFT){
-			world.renderer.addRender("resources/heroLeft.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE, world.BLOCK_SIZE + halfBlockSize, new Vector4f(0,0,1f,.75f));
+			movingLeft.draw(renderer,(int) getRenderX(), (int) getRenderY(), world.BLOCK_SIZE, world.BLOCK_SIZE + halfBlockSize);
 		}else if(direction == Direction.RIGHT){
-			world.renderer.addRender("resources/heroRight.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE, world.BLOCK_SIZE + halfBlockSize, new Vector4f(0,0,1f,.75f));
+			movingRight.draw(renderer,(int) getRenderX(), (int) getRenderY(), world.BLOCK_SIZE, world.BLOCK_SIZE + halfBlockSize);
 		}else if(direction == Direction.DOWN){
-			world.renderer.addRender("resources/heroFront.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE, world.BLOCK_SIZE + halfBlockSize, new Vector4f(0,0,1f,.75f));
+			movingDown.draw(renderer,(int) getRenderX(), (int) getRenderY(), world.BLOCK_SIZE, world.BLOCK_SIZE + halfBlockSize);
 		}else if(direction == Direction.UP){
-			world.renderer.addRender("resources/heroBack.png0",(int) getRenderX(),(int) getRenderY(), world.BLOCK_SIZE, world.BLOCK_SIZE + halfBlockSize, new Vector4f(0,0,1f,.75f));
+			movingUp.draw(renderer,(int) getRenderX(), (int) getRenderY(), world.BLOCK_SIZE, world.BLOCK_SIZE + halfBlockSize);
 		}
 	}
 

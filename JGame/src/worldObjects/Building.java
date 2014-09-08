@@ -1,5 +1,7 @@
 package worldObjects;
 
+import graphics.AnimationSequence;
+import graphics.RenderCollator;
 import mainBootable.world;
 
 import org.lwjgl.util.vector.Vector4f;
@@ -14,17 +16,21 @@ public class Building extends Terrain{
 	private int doorX = 1;
 	private int doorY = 2;
 	int roofHeight = 1;
-	public Building(TerrainType type, int x, int y, int z, world parent, boolean walkable) {
-		super(type, x, y, z, parent, walkable);
+	private RenderCollator renderer =null;
+	private AnimationSequence normalAnimation = null;
+	public Building(RenderCollator renderer,TerrainType type, int x, int y, int z, world parent, boolean walkable) {
+		super(renderer, type, x, y, z, parent, walkable);
 		logicH = 3;
 		logicW = 4;
+		this.renderer = renderer;
+		normalAnimation = renderer.createAnimation(this.type.location);
 		// TODO Auto-generated constructor stub
 	}
 	public void render(){
 		
 	}
 	public void renderBuilding(){
-		world.renderer.addRender(this.type.location, world.BLOCK_SIZE * this.getLogicX(), world.BLOCK_SIZE*this.getLogicY() , this.width, this.height,new Vector4f(0,0,1,.75f));
+		normalAnimation.draw(renderer, world.BLOCK_SIZE * this.getLogicX(), world.BLOCK_SIZE * this.getLogicY(), width, height);
 	}
 	public boolean walkThrough(Direction walkingDirection,unit unit){
 		if(unit.getY() == this.getLogicY()){

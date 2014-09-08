@@ -10,6 +10,7 @@ import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 import graphics.AnimationSequence;
+import graphics.RenderCollator;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,7 +29,8 @@ import utility.Direction;
 
 public class Terrain {
 	protected TerrainType type = TerrainType.AIR;
-	private AnimationSequence Animation;
+	private AnimationSequence animation;
+	private RenderCollator renderer = null;
 	private float x;
 	private float y;
 	private int logicX;
@@ -42,8 +44,9 @@ public class Terrain {
 	protected int height = 32;
 	protected int width = 32;
 	boolean walkable = false;
-	public Terrain(TerrainType type, int x, int y, int z, world parent, boolean walkable) {
-		Animation = new AnimationSequence(type.location);
+	public Terrain(RenderCollator renderer, TerrainType type, int x, int y, int z, world parent, boolean walkable) {
+		animation = renderer.createAnimation(type.location);
+		this.renderer = renderer;
 		this.type = type;
 		if(this.type == TerrainType.DRUNKARDTABLE){
 			this.logicH = 4;
@@ -88,7 +91,7 @@ public class Terrain {
 		this.y = y;
 	}
 	public void render(){
-		world.renderer.addRender(this.type.location, world.BLOCK_SIZE * this.getLogicX(), world.BLOCK_SIZE*this.getLogicY() , world.BLOCK_SIZE*this.logicW,  world.BLOCK_SIZE*this.logicH, new Vector4f(0,0,widthTexture, heightTexture));
+		animation.draw(renderer, world.BLOCK_SIZE * this.getLogicX(), world.BLOCK_SIZE*this.getLogicY() , world.BLOCK_SIZE*this.logicW,  world.BLOCK_SIZE*this.logicH);		//world.renderer.addRender(this.type.location, world.BLOCK_SIZE * this.getLogicX(), world.BLOCK_SIZE*this.getLogicY() , world.BLOCK_SIZE*this.logicW,  world.BLOCK_SIZE*this.logicH, new Vector4f(0,0,widthTexture, heightTexture));
 	}
 	public int getLogicX() {
 		return logicX;

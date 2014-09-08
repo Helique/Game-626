@@ -20,23 +20,27 @@ import org.lwjgl.util.vector.Vector4f;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
+import utility.SpriteSheetParser;
+
 public class RenderCollator {
-	HashMap<String,TextureList> textures= new HashMap<String,TextureList>();
+	HashMap<String,TextureList> animations= new HashMap<String,TextureList>();
 	private int pId;
 
 	public void loadTexture(String location){
 		Texture t = null;
+		Vector4f crops[] = SpriteSheetParser.parseSheet(location);
+		
 		try {
-			t = TextureLoader.getTexture("PNG", new FileInputStream(new File (location)));
+			t = TextureLoader.getTexture("PNG", new FileInputStream(new File (location + ".png")));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		textures.put(location + 0, new TextureList(t));
+		animations.put(location, new TextureList(t,crops));
 	}
-	public void addRender(String TextureID, int renderX, int renderY, int width, int height,Vector4f texCoord){
-		textures.get(TextureID).addToList(new Rectangle(renderX,renderY,width,height),texCoord);
+	public void addRender(String TextureID, int renderX, int renderY, int width, int height,int index){
+		animations.get(TextureID).addToList(new Rectangle(renderX,renderY,width,height),index);
 	}
 	public void render(int cameraX,int cameraY){
 		//ArrayList<TextureList> textureLists = (ArrayList<TextureList>)textures.values();
@@ -57,12 +61,12 @@ public class RenderCollator {
 		scaleBuffer.put(scale);
 		scaleBuffer.flip();
 		GL20.glUniformMatrix4(uniform1, true, scaleBuffer);
-		for(TextureList TL:textures.values()){
+		for(TextureList TL:animations.values()){
 			TL.renderList(cameraX, cameraY);
 		}
 	}
 	public void clear(){
-		for(TextureList TL:textures.values()){
+		for(TextureList TL:animations.values()){
 			TL.clearList();;
 		}
 	}
@@ -70,5 +74,10 @@ public class RenderCollator {
 		this.pId =  pId;
 		GL20.glUseProgram(pId);
 		
+	}
+	public AnimationSequence createAnimation(String location) {
+		
+		AnimationSequence animation = new AnimationSequence(animations.get(location).getSize(), location);
+		return animation;
 	}
 }

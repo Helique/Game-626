@@ -3,12 +3,14 @@ package worldObjects;
 import java.util.ArrayList;
 
 import events.Quest;
+import graphics.RenderCollator;
 import mainBootable.world;
 
 public class Area {
 	Terrain[][][] grid;
 	world parent;
 	ArrayList<Building> buildings = new ArrayList<Building>();
+	private RenderCollator renderer = null;
 	private Quest areaTriggers;
 	public Quest getAreaTriggers() {
 		return areaTriggers;
@@ -31,7 +33,8 @@ public class Area {
 	public int getWidth() {
 		return width;
 	}
-	public Area(int height, int width, world parent){
+	public Area(RenderCollator renderer, int height, int width, world parent){
+		this.renderer = renderer;
 		grid = new Terrain[width][height][3];
 		this.parent = parent;
 		this.height = height;
@@ -48,16 +51,16 @@ public class Area {
 			for (int i =x ; i< (x+t.logicW); i++){
 				for(int j = y+ b.roofHeight; j <(y+t.logicH); j++){
 					grid[i][j][1] = t;
-					grid[i][j][0] = new Terrain(TerrainType.STONE,i,j,0,parent, false);
+					grid[i][j][0] = new Terrain(renderer,TerrainType.STONE,i,j,0,parent, false);
 					System.out.println(t.logicW + " W:H " + t.logicH);
 				}
 			}
-			grid[b.getDoorX() + b.getLogicX()][b.getDoorY() + b.getLogicY()][0] = new Terrain(TerrainType.DIRT,b.getDoorX() + b.getLogicX(),b.getDoorY() + b.getLogicY(),0,parent, true);
+			grid[b.getDoorX() + b.getLogicX()][b.getDoorY() + b.getLogicY()][0] = new Terrain(renderer,TerrainType.DIRT,b.getDoorX() + b.getLogicX(),b.getDoorY() + b.getLogicY(),0,parent, true);
 		} else if(t.getType() == TerrainType.DRUNKARDTABLE){
 			for (int i =x ; i< (x+t.logicW); i++){
 				for(int j = y; j <(y+t.logicH); j++){
 					grid[i][j][1] = t;
-					grid[i][j][0] = new Terrain(TerrainType.DIRT,i,j,0,parent, false);
+					grid[i][j][0] = new Terrain(renderer,TerrainType.DIRT,i,j,0,parent, false);
 					System.out.println(t.logicW + " W:H " + t.logicH);
 				}
 			}

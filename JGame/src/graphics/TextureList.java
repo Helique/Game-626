@@ -26,13 +26,14 @@ import org.newdawn.slick.opengl.Texture;
 public class TextureList {
 	ArrayList<ImageData> toDo = new ArrayList<ImageData>();
 	Texture texture = null;
-	public TextureList(Texture t){
+	Vector4f[] crops = null;
+	public TextureList(Texture t, Vector4f[] crops){
 		this.texture =t;
+		this.crops = crops;
 	}
-	public void addToList(Rectangle posRect,Vector4f texRect){
-		
+	public void addToList(Rectangle posRect,int index){
+		Vector4f texRect= crops[index];
 		toDo.add(new ImageData(posRect,texRect));
-		
 	}
 	public void clearList(){
 		toDo.clear();
@@ -41,6 +42,9 @@ public class TextureList {
 		toDo.clear();
 		toDo = null;
 		texture = null;
+	}
+	public int getSize(){
+		return crops.length;
 	}
 	public void renderList(int cameraX,int cameraY){
 		texture.bind();

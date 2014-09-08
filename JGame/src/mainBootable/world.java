@@ -35,7 +35,7 @@ import worldObjects.TerrainType;
 public class world {
 	public static int BLOCK_SIZE = 32;
 	public static RenderCollator renderer = new RenderCollator();
-	Overlays overlay = new Overlays();
+	Overlays overlay;
 	boolean HeroMoveRight =  false;
 	boolean HeroMoveLeft =  false;
 	boolean HeroMoveDown =  false;
@@ -46,7 +46,7 @@ public class world {
 	HashMap<String,Quest> activeQuests = new HashMap<String,Quest>();
 	Event activeEvent = null;
 	Area currentArea = null;
-	Building heroHouse = new Building(TerrainType.PLAYERHOUSE,1,7,1,this, false);
+	Building heroHouse;
 	public static AudioEngine audioEngine = new AudioEngine();
 	
 	Hero firstPlayer;
@@ -64,25 +64,29 @@ public class world {
 		
 	}
 	public world(){
+		
 		pId = ShaderLoader.loadShaderPair("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
-		renderer.loadTexture("resources/tankRight.png");
-		renderer.loadTexture("resources/dirt.png");
-		renderer.loadTexture("resources/heroRight.png");
-		renderer.loadTexture("resources/stone.png");
-		renderer.loadTexture("resources/heroLeft.png");
-		renderer.loadTexture("resources/heroFront.png");
-		renderer.loadTexture("resources/heroBack.png");
-		renderer.loadTexture("resources/grassTexture.png");
-		renderer.loadTexture("resources/bud.png");
-		renderer.loadTexture("resources/tape.png");
-		renderer.loadTexture("resources/heroHouse.png");
-		renderer.loadTexture("resources/inventoryBG.png");
-		renderer.loadTexture("resources/drunkardTable.png");
+		renderer.loadTexture("resources/terrain/dirt");
+		renderer.loadTexture("resources/hero/heroRight");
+		renderer.loadTexture("resources/terrain/stone");
+		renderer.loadTexture("resources/hero/heroLeft");
+		renderer.loadTexture("resources/hero/heroFront");
+		renderer.loadTexture("resources/hero/heroBack");
+		renderer.loadTexture("resources/terrain/grassTexture");
+		renderer.loadTexture("resources/objects/bud");
+		renderer.loadTexture("resources/objects/tape");
+		renderer.loadTexture("resources/objects/heroHouse");
+		renderer.loadTexture("resources/userInterface/inventoryBG");
+		renderer.loadTexture("resources/objects/drunkardTable");
 		//load audio files
+		
 		audioEngine.load(SoundClipLibrary.DOOR_CREAK);
+		heroHouse = new Building(renderer,TerrainType.PLAYERHOUSE,1,7,1,this, false);
+		
 		
 		currentArea = generateLevel1();
-		firstPlayer = new Hero(10, 15, 3, 3,currentArea);
+		overlay = new Overlays(renderer);
+		firstPlayer = new Hero(renderer,10, 15, 3, 3,currentArea);
 		
 		
 	}
@@ -100,7 +104,7 @@ public class world {
 		renderer.render(cameraX,cameraY );		
 		renderer.clear();
 		
-		firstPlayer.draw(renderer);
+		firstPlayer.draw();
 		renderer.render(cameraX,cameraY );
 		renderer.clear();
 		
@@ -241,44 +245,44 @@ public class world {
 		deactivatedEvents.add(e);
 		int[] initialTriggers = {0};
 		Quest level1Triggers = new Quest(deactivatedTriggers, deactivatedEvents, initialTriggers);
-		Area level = new Area(12,12,this);
+		Area level = new Area(renderer,12,12,this);
 		level.setAreaTriggers(level1Triggers);
 		int[][] locations = {{3,3},{10,10}};
 		level.setTelelocations(locations);
 		for(int i = 0; i < level.getWidth();i++){
 			for(int j = 0; j <level.getHeight();j ++){
-				level.addTerrain(i, j, new Terrain(TerrainType.DIRT, i,j,0,this, true)); 
+				level.addTerrain(i, j, new Terrain(renderer,TerrainType.DIRT, i,j,0,this, true)); 
 				//renderer.addRender("resources/dirt.png0", world.BLOCK_SIZE *j + offset, world.BLOCK_SIZE*i + offset, BLOCK_SIZE, BLOCK_SIZE,new Vector4f(0,0,1,1));
 				
 			}
 		}
 		for(int i = 0; i < level.getWidth();i++){
-			level.addTerrain(i, 0, new Terrain(TerrainType.STONE,i,0,0,this, false));
-			level.addTerrain(i, level.getHeight()-1, new Terrain(TerrainType.STONE,  i,level.getHeight()-1, 0, this, false));
+			level.addTerrain(i, 0, new Terrain(renderer,TerrainType.STONE,i,0,0,this, false));
+			level.addTerrain(i, level.getHeight()-1, new Terrain(renderer,TerrainType.STONE,  i,level.getHeight()-1, 0, this, false));
 		}
 		for(int i = 0; i < level.getHeight();i++){
-			level.addTerrain(0, i, new Terrain(TerrainType.STONE,0,i,0,this,false));
-			level.addTerrain(level.getWidth()-1,i, new Terrain(TerrainType.STONE,  level.getWidth()-1,i, 0, this, false));
+			level.addTerrain(0, i, new Terrain(renderer,TerrainType.STONE,0,i,0,this,false));
+			level.addTerrain(level.getWidth()-1,i, new Terrain(renderer,TerrainType.STONE,  level.getWidth()-1,i, 0, this, false));
 			
 		}
-		level.addTerrain(4, 4,new Terrain(TerrainType.STONE, 4, 4, 0, this, false));
+		level.addTerrain(4, 4,new Terrain(renderer,TerrainType.STONE, 4, 4, 0, this, false));
 		
-		level.addObject(6, 6,new Terrain(TerrainType.GRASS, 6, 6, 1, this, true));
-		level.addObject(7, 6,new Terrain(TerrainType.GRASS, 7, 6, 1, this, true));
-		level.addObject(6, 7,new Terrain(TerrainType.GRASS, 6, 7, 1, this, true));
-		level.addObject(7, 7,new Terrain(TerrainType.GRASS, 7, 7, 1, this, true));
+		level.addObject(6, 6,new Terrain(renderer,TerrainType.GRASS, 6, 6, 1, this, true));
+		level.addObject(7, 6,new Terrain(renderer,TerrainType.GRASS, 7, 6, 1, this, true));
+		level.addObject(6, 7,new Terrain(renderer,TerrainType.GRASS, 6, 7, 1, this, true));
+		level.addObject(7, 7,new Terrain(renderer,TerrainType.GRASS, 7, 7, 1, this, true));
 		
 		
 		level.addObject(1, 7, heroHouse);
-		level.addObject(8, 8, new Collectable(TerrainType.BUD, 8, 8, 1, this, true));
-		level.addObject(2, 1, new Collectable(TerrainType.BUD, 2, 1, 1, this, true));
-		level.addObject(9, 8, new Collectable(TerrainType.TAPE, 9, 8, 1,this, true));
-		level.addObject(1, 1, new Collectable(TerrainType.TAPE, 1, 1, 1,this, true));
+		level.addObject(8, 8, new Collectable(renderer,TerrainType.BUD, 8, 8, 1, this, true));
+		level.addObject(2, 1, new Collectable(renderer,TerrainType.BUD, 2, 1, 1, this, true));
+		level.addObject(9, 8, new Collectable(renderer,TerrainType.TAPE, 9, 8, 1,this, true));
+		level.addObject(1, 1, new Collectable(renderer,TerrainType.TAPE, 1, 1, 1,this, true));
 		
 		return level;
 	}
 	public Area generateMeadHall(){
-		Area level = new Area(25,14,this);
+		Area level = new Area(renderer,25,14,this);
 
 		
 		ArrayList<Trigger> deactivatedTriggers = new ArrayList<Trigger>();
@@ -295,24 +299,24 @@ public class world {
 		
 		for(int i = 0; i < level.getWidth();i++){
 			for(int j = 0; j <level.getHeight();j ++){
-				level.addTerrain(i, j, new Terrain(TerrainType.DIRT, i,j,0,this, true)); 
+				level.addTerrain(i, j, new Terrain(renderer,TerrainType.DIRT, i,j,0,this, true)); 
 				//renderer.addRender("resources/dirt.png0", world.BLOCK_SIZE *j + offset, world.BLOCK_SIZE*i + offset, BLOCK_SIZE, BLOCK_SIZE,new Vector4f(0,0,1,1));
 				
 			}
 		}
 		for(int i = 0; i < level.getWidth();i++){
-			level.addTerrain(i, 0, new Terrain(TerrainType.STONE,i,0,0,this, false));
-			level.addTerrain(i, level.getHeight()-1, new Terrain(TerrainType.STONE,  i,level.getHeight()-1, 0, this,false));
+			level.addTerrain(i, 0, new Terrain(renderer,TerrainType.STONE,i,0,0,this, false));
+			level.addTerrain(i, level.getHeight()-1, new Terrain(renderer,TerrainType.STONE,  i,level.getHeight()-1, 0, this,false));
 		}
 		for(int i = 0; i < level.getHeight();i++){
-			level.addTerrain(0, i, new Terrain(TerrainType.STONE,0,i,0,this, false));
-			level.addTerrain(level.getWidth()-1,i, new Terrain(TerrainType.STONE,  level.getWidth()-1,i, 0, this, false));
+			level.addTerrain(0, i, new Terrain(renderer,TerrainType.STONE,0,i,0,this, false));
+			level.addTerrain(level.getWidth()-1,i, new Terrain(renderer,TerrainType.STONE,  level.getWidth()-1,i, 0, this, false));
 			
 		}
 		for (int i = 0; i < 3; i++){
 			//level.addTerrain(4, 4,new Terrain(TerrainType.STONE, 4, 4, 0, this, false));
-			Terrain t = new Terrain(TerrainType.DRUNKARDTABLE, 3, 5 + 5*i, 1, this, false);
-			Terrain t2 = new Terrain(TerrainType.DRUNKARDTABLE, 8, 5 + 5*i, 1, this, false);
+			Terrain t = new Terrain(renderer,TerrainType.DRUNKARDTABLE, 3, 5 + 5*i, 1, this, false);
+			Terrain t2 = new Terrain(renderer,TerrainType.DRUNKARDTABLE, 8, 5 + 5*i, 1, this, false);
 			level.addObject(3, 5 + 5*i, t);
 			level.addObject(8, 5 + 5*i, t2);
 		}

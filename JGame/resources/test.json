@@ -1,0 +1,7 @@
+samplejson = {
+   "key1": value1,
+   "key_2": "value2",
+   key3: value3,
+   key4:234234234,
+   key5:234234.233
+}
