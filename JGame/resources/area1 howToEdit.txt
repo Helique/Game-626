@@ -1,0 +1,16 @@
+worldZ0 = 
+    {
+        "0": { <--------------------------------------------------------------// coords: y-axis
+            "0": { "TerrainType": "Stone", "Walkable": 0.0 }, <--------------------------------------------------------------// coords: x-axis
+            "1": { "TerrainType": "Stone", "Walkable": 0.0 }, <--------------------------------------------------------------// coords: x-axis
+            "2": { "TerrainType": "Stone", "Walkable": 0.0 }, <--------------------------------------------------------------// coords: x-axis
+            "3": { "TerrainType": "Stone", "Walkable": 0.0 }, <--------------------------------------------------------------// coords: x-axis
+            "4": { "TerrainType": "Stone", "Walkable": 0.0 }, <--------------------------------------------------------------// coords: x-axis
+            "5": { "TerrainType": "Stone", "Walkable": 0.0 }, //etc
+            "6": { "TerrainType": "Stone", "Walkable": 0.0 },
+            "7": { "TerrainType": "Stone", "Walkable": 0.0 },
+            "8": { "TerrainType": "Stone", "Walkable": 0.0 },
+            "9": { "TerrainType": "Stone", "Walkable": 0.0 },
+            "10": { "TerrainType": "Stone", "Walkable": 0.0 },
+            "11": { "TerrainType": "Stone", "Walkable": 0.0 }
+        },
