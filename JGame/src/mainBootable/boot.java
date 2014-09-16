@@ -24,7 +24,7 @@ public class boot {
 	public static int screenWidth = 1600;
 	public static int screenHeight = 900;
 	
-	boolean startInFullScreen = true;
+	boolean startInFullScreen = false;
 	
 	public boot(){
 		if(startInFullScreen){

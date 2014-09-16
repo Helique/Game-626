@@ -26,6 +26,7 @@ import audio.SoundClipLibrary;
 import players.Hero;
 import practiceGame.ItemStack;
 import practiceGame.ItemType;
+import tests.LevelMapImportTest;
 import utility.ShaderLoader;
 import worldObjects.Area;
 import worldObjects.Building;
@@ -47,6 +48,7 @@ public class world {
 	HashMap<String,Quest> activeQuests = new HashMap<String,Quest>();
 	Event activeEvent = null;
 	Area currentArea = null;
+	LevelMapImportTest world1 = new LevelMapImportTest("resources/area1.json");
 	Building heroHouse;
 	public static AudioEngine audioEngine = new AudioEngine();
 	
@@ -249,22 +251,25 @@ public class world {
 		level.setAreaTriggers(level1Triggers);
 		int[][] locations = {{3,3},{10,10}};
 		level.setTelelocations(locations);
-		for(int i = 0; i < level.getWidth();i++){
-			for(int j = 0; j <level.getHeight();j ++){
-				level.addTerrain(i, j, new Terrain(renderer,TerrainType.DIRT, i,j,0,this, true)); 
-				//renderer.addRender("resources/dirt.png0", world.BLOCK_SIZE *j + offset, world.BLOCK_SIZE*i + offset, BLOCK_SIZE, BLOCK_SIZE,new Vector4f(0,0,1,1));
-				
-			}
-		}
-		for(int i = 0; i < level.getWidth();i++){
-			level.addTerrain(i, 0, new Terrain(renderer,TerrainType.STONE,i,0,0,this, false));
-			level.addTerrain(i, level.getHeight()-1, new Terrain(renderer,TerrainType.STONE,  i,level.getHeight()-1, 0, this, false));
-		}
-		for(int i = 0; i < level.getHeight();i++){
-			level.addTerrain(0, i, new Terrain(renderer,TerrainType.STONE,0,i,0,this,false));
-			level.addTerrain(level.getWidth()-1,i, new Terrain(renderer,TerrainType.STONE,  level.getWidth()-1,i, 0, this, false));
-			
-		}
+//		for(int i = 0; i < level.getWidth();i++){
+//			for(int j = 0; j <level.getHeight();j ++){
+//				level.addTerrain(i, j, new Terrain(renderer,TerrainType.DIRT, i,j,0,this, true)); 
+//				//renderer.addRender("resources/dirt.png0", world.BLOCK_SIZE *j + offset, world.BLOCK_SIZE*i + offset, BLOCK_SIZE, BLOCK_SIZE,new Vector4f(0,0,1,1));
+//				
+//			}
+//		}
+//		for(int i = 0; i < level.getWidth();i++){
+//			level.addTerrain(i, 0, new Terrain(renderer,TerrainType.STONE,i,0,0,this, false));
+//			level.addTerrain(i, level.getHeight()-1, new Terrain(renderer,TerrainType.STONE,  i,level.getHeight()-1, 0, this, false));
+//		}
+//		for(int i = 0; i < level.getHeight();i++){
+//			level.addTerrain(0, i, new Terrain(renderer,TerrainType.STONE,0,i,0,this,false));
+//			level.addTerrain(level.getWidth()-1,i, new Terrain(renderer,TerrainType.STONE,  level.getWidth()-1,i, 0, this, false));
+//			
+//		}
+		world1.importMap(level, renderer, this);
+		
+		
 		level.addTerrain(4, 4,new Terrain(renderer,TerrainType.STONE, 4, 4, 0, this, false));
 		
 		level.addObject(6, 6,new Terrain(renderer,TerrainType.GRASS, 6, 6, 1, this, true));
