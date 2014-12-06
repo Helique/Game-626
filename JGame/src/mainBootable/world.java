@@ -269,10 +269,19 @@ public class world {
 //		}
 //		level.addTerrain(4, 4,new Terrain(renderer,TerrainType.STONE, 4, 4, 0, this, false));
 		world1.loadTerrain(level, renderer, this);
-		world1.loadObjects(level, renderer, this);//for some reason this is rendering on layer z = 0, replaces lines 275-284
+		
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		
-		level.addObject(6, 6,new Terrain(renderer,TerrainType.GRASS, 6, 6, 1, this, true));
+		//world1.loadObjects(level, renderer, this);//for some reason this is rendering on layer z = 0, replaces lines 275-284
+		
+		
+	/*	level.addObject(6, 6,new Terrain(renderer,TerrainType.GRASS, 6, 6, 1, this, true));
 		level.addObject(7, 6,new Terrain(renderer,TerrainType.GRASS, 7, 6, 1, this, true));
 		level.addObject(6, 7,new Terrain(renderer,TerrainType.GRASS, 6, 7, 1, this, true));
 		level.addObject(7, 7,new Terrain(renderer,TerrainType.GRASS, 7, 7, 1, this, true));
@@ -282,7 +291,7 @@ public class world {
 		level.addObject(2, 1, new Collectable(renderer,TerrainType.BUD, 2, 1, 1, this, true));
 		level.addObject(9, 8, new Collectable(renderer,TerrainType.TAPE, 9, 8, 1,this, true));
 		level.addObject(1, 1, new Collectable(renderer,TerrainType.TAPE, 1, 1, 1,this, true));
-		
+		*/
 		level.addObject(1, 7, heroHouse);
 		
 		return level;
