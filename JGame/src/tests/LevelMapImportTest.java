@@ -72,12 +72,12 @@ public class LevelMapImportTest {
 				
 				if(isCollectable){
 					isCollectable = false;
-					area.addTerrain(i, j, new Collectable(renderer,terainType, i,j,1,parent, walkable)); 
+					area.addObject(i, j, new Collectable(renderer,terainType, i,j,1,parent, walkable)); 
 					
 				}
 				else if(isTerrain){
 					isTerrain = false;
-				area.addTerrain(i, j, new Terrain(renderer,terainType, i,j,1,parent, walkable)); 
+					area.addObject(i, j, new Terrain(renderer,terainType, i,j,1,parent, walkable)); 
 				}
 				else{
 					//Building building = null;
@@ -88,8 +88,8 @@ public class LevelMapImportTest {
 	}
 	
 	public static TerrainType getTerrainType(Integer i, Integer j, String jsonObjectName){
-		Integer x = j;//swapped them due to incorrectly formatting my .json file
-		Integer y = i;//
+		Integer x = i;
+		Integer y = j;
 		TerrainType terrain = null;
 		
 		Map jsonHydratedObject = (Map) jsonData.get(jsonObjectName);
@@ -98,43 +98,52 @@ public class LevelMapImportTest {
 			case "Stone":
 				terrain = TerrainType.STONE;
 				isTerrain = true;
+				isCollectable = false;
 				break;
 			case "Air":
 				terrain = TerrainType.AIR;
 				isTerrain = true;
+				isCollectable = false;
 				break;
 			case "Grass":
 				terrain = TerrainType.GRASS;
 				isTerrain = true;
+				isCollectable = false;
 				break;
 			case "Dirt":
 				terrain = TerrainType.DIRT;
 				isTerrain = true;
+				isCollectable = false;
 				break;
 			case "DrunkardTable":
 				terrain = TerrainType.DRUNKARDTABLE;
 				isTerrain = true;
+				isCollectable = false;
 				break;
 			case "PlayerHouse":
 				terrain = TerrainType.PLAYERHOUSE;
 				isTerrain = true;
+				isCollectable = false;
 				break;
 			case "Bud":
 				terrain = TerrainType.BUD;
+				isTerrain = false;
 				isCollectable = true;
 				break;
 			case "Tape":
 				terrain = TerrainType.TAPE;
+				isTerrain = false;
 				isCollectable = true;
 				break;
 			default:
+				terrain = null;
 				break;
 		}
 		return terrain;
 	}
 	public static Boolean isWalkable(Integer i, Integer j, String jsonObjectName){
-		Integer x = j;//swapped them due to incorrectly formatting my .json file
-		Integer y = i;//
+		Integer x = i;
+		Integer y = j;
 		Boolean walkable = null;
 		
 		Map jsonHydratedObject = (Map) jsonData.get(jsonObjectName);

@@ -206,7 +206,7 @@ worldZ1 =
         },
         "2": {
             "0": { "TerrainType": "null", "Walkable": 0.0 },
-            "1": { "TerrainType": "null", "Walkable": 0.0 },
+            "1": { "TerrainType": "Bud", "Walkable": 1.0 },
             "2": { "TerrainType": "null", "Walkable": 0.0 },
             "3": { "TerrainType": "null", "Walkable": 0.0 },
             "4": { "TerrainType": "null", "Walkable": 0.0 },
@@ -311,7 +311,7 @@ worldZ1 =
             "5": { "TerrainType": "null", "Walkable": 0.0 },
             "6": { "TerrainType": "null", "Walkable": 0.0 },
             "7": { "TerrainType": "null", "Walkable": 0.0 },
-            "8": { "TerrainType": "null", "Walkable": 0.0 },
+            "8": { "TerrainType": "Tape", "Walkable": 1.0 },
             "9": { "TerrainType": "null", "Walkable": 0.0 },
             "10": { "TerrainType": "null", "Walkable": 0.0 },
             "11": { "TerrainType": "null", "Walkable": 0.0 }
