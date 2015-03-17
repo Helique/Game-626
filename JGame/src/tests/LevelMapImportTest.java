@@ -3,7 +3,10 @@ package tests;
 import graphics.RenderCollator;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -14,6 +17,8 @@ import worldObjects.Collectable;
 import worldObjects.Terrain;
 import worldObjects.TerrainType;
 
+import com.json.generators.JSONGenerator;
+import com.json.generators.JsonGeneratorFactory;
 import com.json.parsers.JSONParser;
 import com.json.parsers.JsonParserFactory;
 
@@ -41,6 +46,9 @@ public class LevelMapImportTest {
 		JsonParserFactory factory = JsonParserFactory.getInstance();
 		JSONParser parser = factory.newJsonParser();
 		jsonData = parser.parseJson(jsonString);
+		
+		Map jsonHydratedObject = (Map) jsonData.get("worldZ0");
+		saveMapTest(jsonHydratedObject);
 	}
 	
 	public void loadTerrain(Area area, RenderCollator renderer, world parent){
@@ -158,23 +166,65 @@ public class LevelMapImportTest {
 		}
 		return walkable;
 	}
-
-}
-/*
-		for(int i = 0; i < level.getWidth();i++){
-			for(int j = 0; j <level.getHeight();j ++){
-				level.addTerrain(i, j, new Terrain(renderer,TerrainType.DIRT, i,j,0,this, true)); 
-				//renderer.addRender("resources/dirt.png0", world.BLOCK_SIZE *j + offset, world.BLOCK_SIZE*i + offset, BLOCK_SIZE, BLOCK_SIZE,new Vector4f(0,0,1,1));
+	
+	public static void saveMapTest(Map loadedJsonMap){
+		HashMap<Integer, HashMap<Integer,HashMap<String,String>>> iMap = new HashMap<Integer, HashMap<Integer,HashMap<String,String>>>();
+		HashMap<Integer, HashMap<String, String>> jMap = new HashMap<Integer, HashMap<String, String>>();
+		HashMap<String, String> block = null;
+		Integer x = null;
+		Integer y = null;
+		
+		
+		for(int i = 0; i < loadedJsonMap.size(); i++){
+			jMap.clear();
+			for(int j = 0; j < loadedJsonMap.size(); j++){
+				x = i;
+				y = j;
+				block = new HashMap<String, String>();
+				
+				String walkable = "";
+				String terrain = (((Map)(((Map)(loadedJsonMap.get( x.toString() ))).get(  y.toString() ))).get("TerrainType")).toString();
+				
+				switch( (((Map)(((Map)(loadedJsonMap.get( x.toString() ))).get(  y.toString() ))).get("Walkable")).toString() ){
+				case "1.0":
+					walkable = "true";
+					break;
+				case "0.0":
+					walkable = "false";
+					break;
+				}
+				
+				
+				System.out.println(terrain+", "+walkable);
+				block.put("TerrainType",  terrain);
+				block.put("Walkable",  walkable);
+				jMap.put(y, block);
+				System.out.println("block --> jMap" +"("+y+")");
 				
 			}
+			iMap.put(x, jMap);
+			System.out.println("jMap --> iMap");
 		}
-		for(int i = 0; i < level.getWidth();i++){
-			level.addTerrain(i, 0, new Terrain(renderer,TerrainType.STONE,i,0,0,this, false));
-			level.addTerrain(i, level.getHeight()-1, new Terrain(renderer,TerrainType.STONE,  i,level.getHeight()-1, 0, this, false));
+		
+		
+		JsonGeneratorFactory factory = JsonGeneratorFactory.getInstance();
+		JSONGenerator generator = factory.newJsonGenerator();
+		String json = generator.generateJson(iMap);
+		json = json.replace('[', ' ');
+		json = json.replace(']', ' ');
+		json = json.trim();
+		System.out.println(json);
+		String jsonEntire = "WorldZ0 = " + json;
+		PrintWriter out = null;
+		try {
+			out = new PrintWriter("jsonCreationTest.json");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
-		for(int i = 0; i < level.getHeight();i++){
-			level.addTerrain(0, i, new Terrain(renderer,TerrainType.STONE,0,i,0,this,false));
-			level.addTerrain(level.getWidth()-1,i, new Terrain(renderer,TerrainType.STONE,  level.getWidth()-1,i, 0, this, false));
-			
-		}
-*/
+		out.print(jsonEntire);
+		System.out.println(jsonEntire);
+		out.close();
+		
+	}
+
+}
