@@ -47,8 +47,9 @@ public class LevelMapImportTest {
 		JSONParser parser = factory.newJsonParser();
 		jsonData = parser.parseJson(jsonString);
 		
-		Map jsonHydratedObject = (Map) jsonData.get("worldZ0");
-		saveMapTest(jsonHydratedObject);
+		//Map jsonHydratedObject = (Map) jsonData.get("worldZ0");
+		//Map jsonHydratedObject2 = (Map) jsonData.get("worldZ1");
+		//saveMapTest(jsonHydratedObject, jsonHydratedObject2);
 	}
 	
 	public void loadTerrain(Area area, RenderCollator renderer, world parent){
@@ -167,7 +168,7 @@ public class LevelMapImportTest {
 		return walkable;
 	}
 	
-	public static void saveMapTest(Map loadedJsonMap){
+	public static void saveMapTest(Map loadedJsonMap, Map loadedJsonMap2){
 		HashMap<Integer, HashMap<Integer,HashMap<String,String>>> iMap = new HashMap<Integer, HashMap<Integer,HashMap<String,String>>>();
 		HashMap<Integer, HashMap<String, String>> jMap = new HashMap<Integer, HashMap<String, String>>();
 		HashMap<String, String> block = null;
@@ -176,16 +177,16 @@ public class LevelMapImportTest {
 		
 		
 		for(int i = 0; i < loadedJsonMap.size(); i++){
-			jMap.clear();
+			jMap =  new HashMap<Integer, HashMap<String, String>>();// replaced jMap.clear();
 			for(int j = 0; j < loadedJsonMap.size(); j++){
 				x = i;
 				y = j;
 				block = new HashMap<String, String>();
 				
-				String walkable = "";
+				String walkable = (((Map)(((Map)(loadedJsonMap.get( x.toString() ))).get(  y.toString() ))).get("Walkable")).toString();
 				String terrain = (((Map)(((Map)(loadedJsonMap.get( x.toString() ))).get(  y.toString() ))).get("TerrainType")).toString();
 				
-				switch( (((Map)(((Map)(loadedJsonMap.get( x.toString() ))).get(  y.toString() ))).get("Walkable")).toString() ){
+/*				switch( (((Map)(((Map)(loadedJsonMap.get( x.toString() ))).get(  y.toString() ))).get("Walkable")).toString() ){
 				case "1.0":
 					walkable = "true";
 					break;
@@ -193,19 +194,43 @@ public class LevelMapImportTest {
 					walkable = "false";
 					break;
 				}
+*/			
 				
-				
-				System.out.println(terrain+", "+walkable);
+				//System.out.println(terrain+", "+walkable);
 				block.put("TerrainType",  terrain);
 				block.put("Walkable",  walkable);
 				jMap.put(y, block);
-				System.out.println("block --> jMap" +"("+y+")");
+				//System.out.println("block --> jMap" +"("+y+")");
 				
 			}
 			iMap.put(x, jMap);
-			System.out.println("jMap --> iMap");
+			//System.out.println("jMap --> iMap");
 		}
+/*		Map testMap = (Map)iMap;
+		System.out.println("--------------");
+		System.out.println(
+				(((Map)(((Map)(testMap.get( "0" ))).get(  "0" ))).get("TerrainType")).toString()
+				+ ", " +
+				(((Map)(((Map)(testMap.get( "0" ))).get(  "0" ))).get("Walkable")).toString() 
+		);
+		System.out.println("--------------");
+*//*		
+		x = 7;
+		y = 2;
+		String walkable = "";
+		String terrain = (((Map)(((Map)(loadedJsonMap.get( x.toString() ))).get(  y.toString() ))).get("TerrainType")).toString();
 		
+		switch( (((Map)(((Map)(loadedJsonMap.get( x.toString() ))).get(  y.toString() ))).get("Walkable")).toString() ){
+		case "1.0":
+			walkable = "true";
+			break;
+		case "0.0":
+			walkable = "false";
+			break;
+		}
+		System.out.println("terrain: " + terrain);
+		System.out.println("walkable: " + walkable);
+*/		
 		
 		JsonGeneratorFactory factory = JsonGeneratorFactory.getInstance();
 		JSONGenerator generator = factory.newJsonGenerator();
@@ -214,15 +239,52 @@ public class LevelMapImportTest {
 		json = json.replace(']', ' ');
 		json = json.trim();
 		System.out.println(json);
-		String jsonEntire = "WorldZ0 = " + json;
+		String jsonEntire = "worldZ0 = " + json;
+		
+		iMap = new HashMap<Integer, HashMap<Integer,HashMap<String,String>>>();
+		jMap = new HashMap<Integer, HashMap<String, String>>();
+		block = null;
+		x = null;
+		y = null;
+		
+		
+		for(int i = 0; i < loadedJsonMap2.size(); i++){
+			jMap =  new HashMap<Integer, HashMap<String, String>>();// replaced jMap.clear();
+			for(int j = 0; j < loadedJsonMap2.size(); j++){
+				x = i;
+				y = j;
+				block = new HashMap<String, String>();
+				
+				String walkable = (((Map)(((Map)(loadedJsonMap2.get( x.toString() ))).get(  y.toString() ))).get("Walkable")).toString();
+				String terrain = (((Map)(((Map)(loadedJsonMap2.get( x.toString() ))).get(  y.toString() ))).get("TerrainType")).toString();
+				
+				block.put("TerrainType",  terrain);
+				block.put("Walkable",  walkable);
+				jMap.put(y, block);
+				
+			}
+			iMap.put(x, jMap);
+		}
+
+		JsonGeneratorFactory factory2 = JsonGeneratorFactory.getInstance();
+		JSONGenerator generator2 = factory2.newJsonGenerator();
+		String json2 = generator2.generateJson(iMap);
+		json2 = json2.replace('[', ' ');
+		json2 = json2.replace(']', ' ');
+		json2 = json2.trim();
+		System.out.println(json2);
+		String jsonEntire2 = "worldZ1 = " + json2;
+		
+		
+		
 		PrintWriter out = null;
 		try {
 			out = new PrintWriter("jsonCreationTest.json");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		out.print(jsonEntire);
-		System.out.println(jsonEntire);
+		out.print(jsonEntire+" "+jsonEntire2);
+		//System.out.println(jsonEntire);
 		out.close();
 		
 	}
