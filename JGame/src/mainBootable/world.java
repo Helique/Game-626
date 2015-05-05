@@ -29,6 +29,7 @@ import practiceGame.ItemStack;
 import practiceGame.ItemType;
 import tests.LevelMapImportTest;
 import utility.ShaderLoader;
+import utility.ToggleButton;
 import worldObjects.Area;
 import worldObjects.Building;
 import worldObjects.Collectable;
@@ -36,6 +37,9 @@ import worldObjects.Terrain;
 import worldObjects.TerrainType;
 
 public class world {
+	ToggleButton vsyncKey = new ToggleButton(Keyboard.KEY_V);
+	ToggleButton fullscreenKey = new ToggleButton(Keyboard.KEY_M);
+	ToggleButton inventoryKey = new ToggleButton(Keyboard.KEY_ESCAPE);
 	public static int BLOCK_SIZE = 32;
 	public static RenderCollator renderer = new RenderCollator();
 	Overlays overlay;
@@ -43,7 +47,6 @@ public class world {
 	boolean HeroMoveLeft =  false;
 	boolean HeroMoveDown =  false;
 	boolean HeroMoveUp =  false;
-	boolean escapeKeyPressed = false;
 	boolean inEvent = false;
 	HashMap<String,Quest> inactiveQuests = new HashMap<String,Quest>();
 	HashMap<String,Quest> activeQuests = new HashMap<String,Quest>();
@@ -87,7 +90,7 @@ public class world {
 		
 		heroHouse = new Building(renderer,TerrainType.PLAYERHOUSE,1,7,1,this, false);
 		audioEngine.load(SoundClipLibrary.DOOR_CREAK, AudioGroup.SOUND_EFFECT, 100);
-		
+
 		currentArea = generateLevel1();
 		overlay = new Overlays(renderer);
 		firstPlayer = new Hero(renderer,10, 15, 3, 3,currentArea);
@@ -164,22 +167,22 @@ public class world {
 		HeroMoveDown = Keyboard.isKeyDown(Keyboard.KEY_S);
 		HeroMoveLeft = Keyboard.isKeyDown(Keyboard.KEY_A);
 		HeroMoveRight = Keyboard.isKeyDown(Keyboard.KEY_D);
-		if(!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && escapeKeyPressed){
-			escapeKeyPressed = false;
-		}else if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && (!escapeKeyPressed)){
-			escapeKeyPressed = true;
+		
+		if(inventoryKey.update()){
 			overlay.toggleInventory();
 		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_M)){
+		
+		if(fullscreenKey.update()){
 			try {
-				Display.setFullscreen(false);
+				Display.setFullscreen(fullscreenKey.state());
 			} catch (LWJGLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		
-		
+		if(vsyncKey.update())
+			Display.setVSyncEnabled(vsyncKey.state());
 	}
 	
 
