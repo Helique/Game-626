@@ -65,6 +65,9 @@ public class Terrain {
 	public boolean walkThrough(Direction walkingDirection,unit unit){
 		return walkable;
 	}
+	public boolean isWalkable(){
+		return walkable;
+	}
 	public void activate(Hero activatingPlayer){
 		//parent.removeTerrain(this.logicX,this.logicY,this.logicZ);
 	}

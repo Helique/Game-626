@@ -86,9 +86,11 @@ public class world {
 		renderer.loadTexture("resources/objects/heroHouse");
 		renderer.loadTexture("resources/userInterface/inventoryBG");
 		renderer.loadTexture("resources/objects/drunkardTable");
-		//load audio files
+		
 		
 		heroHouse = new Building(renderer,TerrainType.PLAYERHOUSE,1,7,1,this, false);
+		
+		//load audio files
 		audioEngine.load(SoundClipLibrary.DOOR_CREAK, AudioGroup.SOUND_EFFECT, 100);
 
 		currentArea = generateLevel1();
