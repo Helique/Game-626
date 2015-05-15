@@ -9,6 +9,7 @@ import com.json.generators.JSONGenerator;
 import com.json.generators.JsonGeneratorFactory;
 
 import worldObjects.Area;
+import worldObjects.Terrain;
 import worldObjects.TerrainType;
 
 public class MapFileGenerator {
@@ -125,6 +126,72 @@ public class MapFileGenerator {
 				x = i;
 				y = j;
 				block = new HashMap<String, String>();
+				//System.out.println("x: " + x + " y: " + y );
+				
+				if(area.getTerrain(x, y, 1).isWalkable()){
+					walkable = "1.0";
+				}
+				else{
+					walkable = "0.0";
+				}
+				System.out.println("Terrain: " + area.getTerrain(x, y, 1).getType());
+				switch(area.getTerrain(x, y, 1).getType()){
+				case DRUNKARDTABLE:
+					terrain = "DrunkardTable";
+					break;
+				case PLAYERHOUSE:
+					terrain = "PlayerHouse";
+					break;
+				case AIR:
+					terrain = "Air";
+					break;
+				case BUD:
+					terrain = "Bud";
+					break;
+				case TAPE:
+					terrain = "Tape";
+					break;
+				default:
+					terrain = "null";
+					break;
+				}
+
+				
+				block.put("TerrainType",  terrain);
+				//block.put("Walkable",  walkable);
+				jMap.put(y, block);
+				
+			}
+			iMap.put(x, jMap);
+		}
+
+		JsonGeneratorFactory factory2 = JsonGeneratorFactory.getInstance();
+		JSONGenerator generator2 = factory2.newJsonGenerator();
+		String json2 = generator2.generateJson(iMap);
+		json2 = json2.replace('[', ' ');
+		json2 = json2.replace(']', ' ');
+		json2 = json2.trim();
+		System.out.println(json2);
+		String jsonEntire2 = "worldZ1 = " + json2;
+		
+		/**************************************************************************************************
+		 * 
+		 * 	WorldZ2
+		 * 
+		 **************************************************************************************************/
+/*		iMap = new HashMap<Integer, HashMap<Integer,HashMap<String,String>>>();
+		jMap = new HashMap<Integer, HashMap<String, String>>();
+		block = null;
+		x = null;
+		y = null;
+		
+		
+		for(int i = 0; i < area.getWidth(); i++){
+			jMap =  new HashMap<Integer, HashMap<String, String>>();// replaced jMap.clear();
+			for(int j = 0; j < area.getHeight(); j++){
+				x = i;
+				y = j;
+				block = new HashMap<String, String>();
 				
 				if(area.getTerrain(x, y, 1).isWalkable()){
 					walkable = "1.0";
@@ -159,23 +226,16 @@ public class MapFileGenerator {
 			iMap.put(x, jMap);
 		}
 
-		JsonGeneratorFactory factory2 = JsonGeneratorFactory.getInstance();
-		JSONGenerator generator2 = factory2.newJsonGenerator();
-		String json2 = generator2.generateJson(iMap);
-		json2 = json2.replace('[', ' ');
-		json2 = json2.replace(']', ' ');
-		json2 = json2.trim();
-		System.out.println(json2);
-		String jsonEntire2 = "worldZ1 = " + json2;
+		JsonGeneratorFactory factory3 = JsonGeneratorFactory.getInstance();
+		JSONGenerator generator3 = factory3.newJsonGenerator();
+		String json3 = generator3.generateJson(iMap);
+		json3 = json3.replace('[', ' ');
+		json3 = json3.replace(']', ' ');
+		json3 = json3.trim();
+		System.out.println(json3);
+		String jsonEntire3 = "worldObjects = " + json3;
 		
-		/**************************************************************************************************
-		 * 
-		 * 	WorldZ2
-		 * 
-		 **************************************************************************************************/
-		
-		
-		
+*/
 		PrintWriter out = null;
 		try {
 			out = new PrintWriter("jsonCreationTest_FromArea.json");

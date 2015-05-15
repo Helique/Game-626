@@ -65,7 +65,7 @@ public class Terrain {
 	public boolean walkThrough(Direction walkingDirection,unit unit){
 		return walkable;
 	}
-	public boolean isWalkable(){
+	public boolean isWalkable(){//temp
 		return walkable;
 	}
 	public void activate(Hero activatingPlayer){

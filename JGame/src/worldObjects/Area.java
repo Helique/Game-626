@@ -36,6 +36,10 @@ public class Area {
 	public Area(RenderCollator renderer, int height, int width, world parent){
 		this.renderer = renderer;
 		grid = new Terrain[width][height][3];
+		//initArray(width, height, 3);
+		/* David, we need to initialize the entire map array with a TerrainType 
+		 * so that we don't get NullPointerException when I call getTerrainType()
+		 */
 		this.parent = parent;
 		this.height = height;
 		this.width = width;
@@ -43,6 +47,16 @@ public class Area {
 	}
 	public void addTerrain(int x, int y, Terrain t){
 		grid[x][y][0] = t;
+	}
+	public void initArray(int xSize, int ySize, int zSize){
+		for(int x = 0; x < xSize; x++){
+			for(int y = 0; y < ySize; y++){
+				for(int z = 0; z < zSize; z++){
+					Terrain t = new Terrain(parent.renderer, TerrainType.AIR, x, y, z, parent, true);
+					grid[x][y][z] = t;
+				}
+			}
+		}
 	}
 	public void addObject(int x, int y, Terrain t){
 		if(t.getType() == TerrainType.PLAYERHOUSE){
