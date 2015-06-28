@@ -35,7 +35,7 @@ public class Terrain {
 	private float y;
 	private int logicX;
 	private int logicY;
-	int logicZ;
+	public int logicZ;
 	protected float widthTexture = 1;
 	protected float heightTexture = 1;
 	protected int logicH = 1;

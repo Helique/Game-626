@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import mainBootable.world;
 import worldObjects.Area;
+import worldObjects.Building;
 import worldObjects.Collectable;
 import worldObjects.Terrain;
 import worldObjects.TerrainType;
@@ -20,6 +21,7 @@ public class MapLoader {
 	public static Map jsonData;
 	private static boolean isCollectable = false;
 	private static boolean isTerrain = false;
+	private static boolean isBuilding = false;
 	
 	public MapLoader(String filepath) {
 		Scanner fileScanner = null;
@@ -57,11 +59,12 @@ public class MapLoader {
 		}
 	}
 	public void loadObjects(Area area, RenderCollator renderer, world parent){
-
+		boolean once = false;
 		for(int i = 0; i < area.getWidth();i++){
 	yloop: for(int j = 0; j <area.getHeight();j ++){
 				
 				TerrainType terainType = getTerrainType(i, j, "worldZ1");
+				System.out.println(terainType);
 				if(terainType == null){
 					continue yloop;
 				}
@@ -76,9 +79,12 @@ public class MapLoader {
 					isTerrain = false;
 					area.addObject(i, j, new Terrain(renderer,terainType, i,j,1,parent, walkable)); 
 				}
+				else if(isBuilding && !once){
+					area.addObject(i, j, new Building(renderer,terainType,i,j,1,parent, walkable));
+					once = true;
+				}
 				else{
-					//Building building = null;
-					//area.addObject(i, j, building);
+					
 				}
 			}
 		}
@@ -119,8 +125,9 @@ public class MapLoader {
 				break;
 			case "PlayerHouse":
 				terrain = TerrainType.PLAYERHOUSE;
-				isTerrain = true;
+				isTerrain = false;
 				isCollectable = false;
+				isBuilding = true;
 				break;
 			case "Bud":
 				terrain = TerrainType.BUD;

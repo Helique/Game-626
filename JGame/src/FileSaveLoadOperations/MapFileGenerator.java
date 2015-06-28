@@ -9,6 +9,7 @@ import com.json.generators.JSONGenerator;
 import com.json.generators.JsonGeneratorFactory;
 
 import worldObjects.Area;
+import worldObjects.Building;
 import worldObjects.Terrain;
 import worldObjects.TerrainType;
 
@@ -128,37 +129,45 @@ public class MapFileGenerator {
 				block = new HashMap<String, String>();
 				//System.out.println("x: " + x + " y: " + y );
 				
-				if(area.getTerrain(x, y, 1).isWalkable()){
+				if(area.getTerrain(x, y, 1) != null){
 					walkable = "1.0";
+					if(area.getTerrain(x, y, 1).isWalkable()){
+						walkable = "1.0";
+					}
+					else{
+						walkable = "0.0";
+					}
+				
+					System.out.println("Terrain: " + area.getTerrain(x, y, 1).getType());
+					switch(area.getTerrain(x, y, 1).getType()){
+					case DRUNKARDTABLE:
+						terrain = "DrunkardTable";
+						break;
+					case PLAYERHOUSE:
+						terrain = "PlayerHouse";
+						break;
+					case AIR:
+						terrain = "Air";
+						break;
+					case BUD:
+						terrain = "Bud";
+						break;
+					case TAPE:
+						terrain = "Tape";
+						break;
+					default:
+						terrain = "null";
+						break;
+					}
 				}
 				else{
-					walkable = "0.0";
-				}
-				System.out.println("Terrain: " + area.getTerrain(x, y, 1).getType());
-				switch(area.getTerrain(x, y, 1).getType()){
-				case DRUNKARDTABLE:
-					terrain = "DrunkardTable";
-					break;
-				case PLAYERHOUSE:
-					terrain = "PlayerHouse";
-					break;
-				case AIR:
-					terrain = "Air";
-					break;
-				case BUD:
-					terrain = "Bud";
-					break;
-				case TAPE:
-					terrain = "Tape";
-					break;
-				default:
+					walkable = "1.0";
 					terrain = "null";
-					break;
 				}
 
 				
 				block.put("TerrainType",  terrain);
-				//block.put("Walkable",  walkable);
+				block.put("Walkable",  walkable);
 				jMap.put(y, block);
 				
 			}
@@ -176,50 +185,53 @@ public class MapFileGenerator {
 		
 		/**************************************************************************************************
 		 * 
-		 * 	WorldZ2
+		 * 	worldObjects
 		 * 
 		 **************************************************************************************************/
-/*		iMap = new HashMap<Integer, HashMap<Integer,HashMap<String,String>>>();
+		iMap = new HashMap<Integer, HashMap<Integer,HashMap<String,String>>>();
 		jMap = new HashMap<Integer, HashMap<String, String>>();
 		block = null;
 		x = null;
 		y = null;
-		
-		
+		String zLoc = "";
 		for(int i = 0; i < area.getWidth(); i++){
 			jMap =  new HashMap<Integer, HashMap<String, String>>();// replaced jMap.clear();
 			for(int j = 0; j < area.getHeight(); j++){
 				x = i;
 				y = j;
 				block = new HashMap<String, String>();
-				
-				if(area.getTerrain(x, y, 1).isWalkable()){
+				if(area.getTerrain(x, y, 1) != null){
 					walkable = "1.0";
+					if(area.getTerrain(x, y, 1).isWalkable()){
+						walkable = "1.0";
+					}
+					else{
+						walkable = "0.0";
+					}
+					switch(area.getTerrain(x, y, 1).getType()){
+					case DRUNKARDTABLE:
+						terrain = "DrunkardTable";
+						break;
+					case PLAYERHOUSE:
+						
+						terrain = "PlayerHouse";
+						break;
+					default:
+						terrain = "null";
+						break;
+					}
+					zLoc = ((Integer)area.getTerrain(x, y, 1).logicZ).toString();
+					
 				}
 				else{
-					walkable = "0.0";
-				}
-				switch(area.getTerrain(x, y, 0).getType()){
-				case DRUNKARDTABLE:
-					terrain = "DrunkardTable";
-					break;
-				case PLAYERHOUSE:
-					terrain = "PlayerHouse";
-					break;
-				case BUD:
-					terrain = "Bud";
-					break;
-				case TAPE:
-					terrain = "Tape";
-					break;
-				default:
+					walkable = "1.0";
 					terrain = "null";
-					break;
+					zLoc = "null";
 				}
-
 				
 				block.put("TerrainType",  terrain);
 				block.put("Walkable",  walkable);
+				block.put("zLoc",  zLoc);
 				jMap.put(y, block);
 				
 			}
@@ -235,14 +247,14 @@ public class MapFileGenerator {
 		System.out.println(json3);
 		String jsonEntire3 = "worldObjects = " + json3;
 		
-*/
+
 		PrintWriter out = null;
 		try {
 			out = new PrintWriter("jsonCreationTest_FromArea.json");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		out.print(jsonEntire+" "+jsonEntire2);
+		out.print(jsonEntire+" "+jsonEntire2+" "+jsonEntire3);
 		//System.out.println(jsonEntire);
 		out.close();
 		
