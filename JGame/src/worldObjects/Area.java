@@ -62,9 +62,10 @@ public class Area {
 		if(t.getType() == TerrainType.PLAYERHOUSE){
 			Building b = (Building)t;
 			buildings.add(b);
+			grid[x][y/*+b.roofHeight*/][1] = t;
 			for (int i =x ; i< (x+t.logicW); i++){
 				for(int j = y+ b.roofHeight; j <(y+t.logicH); j++){
-					grid[i][j][1] = t;
+					//grid[i][j][1] = t;
 					grid[i][j][0] = new Terrain(renderer,TerrainType.STONE,i,j,0,parent, false);
 					System.out.println(t.logicW + " W:H " + t.logicH);
 				}

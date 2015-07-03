@@ -13,6 +13,8 @@ import utility.Direction;
 public class Building extends Terrain{
 	int height = 96;
 	int width = 128;
+	int originX;
+	int originY;
 	private int doorX = 1;
 	private int doorY = 2;
 	int roofHeight = 1;
