@@ -27,37 +27,29 @@ public class MapLoader {
 		Scanner fileScanner = null;
 		File file = new File(filepath);
 		String jsonString = "";
-		///////////////////////////////
 		try {
 			fileScanner = new Scanner(file);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		///////////////////////////////
 		while(fileScanner.hasNextLine()){
 			jsonString += fileScanner.nextLine();
 		}
-		
 		JsonParserFactory factory = JsonParserFactory.getInstance();
 		JSONParser parser = factory.newJsonParser();
 		jsonData = parser.parseJson(jsonString);
-		
 	}
 	
 	public void loadTerrain(Area area, RenderCollator renderer, world parent){
-
 		for(int i = 0; i < area.getWidth();i++){
 			for(int j = 0; j <area.getHeight();j ++){
-				
 				TerrainType terainType = getTerrainType(i, j, "worldZ0");
 				Boolean walkable = isWalkable(i, j, "worldZ0");
-				
-				
-				area.addTerrain(i, j, new Terrain(renderer,terainType, i,j,0,parent, walkable)); 
-				
+				area.addTerrain(i, j, new Terrain(renderer,terainType, i,j,0,parent, walkable));
 			}
 		}
 	}
+	
 	public void loadObjects(Area area, RenderCollator renderer, world parent){
 		boolean once = false;
 		for(int i = 0; i < area.getWidth();i++){
@@ -69,11 +61,9 @@ public class MapLoader {
 					continue yloop;
 				}
 				Boolean walkable = isWalkable(i, j, "worldZ1");
-				
 				if(isCollectable){
 					isCollectable = false;
 					area.addObject(i, j, new Collectable(renderer,terainType, i,j,1,parent, walkable)); 
-					
 				}
 				else if(isTerrain){
 					isTerrain = false;
@@ -84,7 +74,6 @@ public class MapLoader {
 					once = true;
 				}
 				else{
-					
 				}
 			}
 		}
@@ -94,7 +83,6 @@ public class MapLoader {
 		Integer x = i;
 		Integer y = j;
 		TerrainType terrain = null;
-		
 		Map jsonHydratedObject = (Map) jsonData.get(jsonObjectName);
 		
 		switch( (((Map)(((Map)(jsonHydratedObject.get( x.toString() ))).get(  y.toString() ))).get("TerrainType")).toString() ){
@@ -145,12 +133,12 @@ public class MapLoader {
 		}
 		return terrain;
 	}
+	
 	public static Boolean isWalkable(Integer i, Integer j, String jsonObjectName){
 		Integer x = i;
 		Integer y = j;
 		Boolean walkable = null;
-		
-		Map jsonHydratedObject = (Map) jsonData.get(jsonObjectName);
+		Map jsonHydratedObject = (Map)jsonData.get(jsonObjectName);
 		
 		switch( (((Map)(((Map)(jsonHydratedObject.get( x.toString() ))).get(  y.toString() ))).get("Walkable")).toString() ){
 			case "1.0":
